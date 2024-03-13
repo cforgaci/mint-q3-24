@@ -3,80 +3,136 @@ title: "Topic modeling with R"
 format: html
 ---
 
-```{r setup}
-library(tidyverse)
-library(tidytext)
-library(topicmodels)
-library(LDAvis)
+For this analysis, we will need to load the following R packages.
+
+```{r setup, message=FALSE}
+library(tidyverse)    # Data manipulation and visualisation
+library(tidytext)     # Text manipulation
+library(topicmodels)  # Topic modeling
+library(LDAvis)       # Interactive visualisation of LDA models
+library(reticulate)   # R interface with Python
+library(wordcloud)
 ```
 
 ## Introduction
 
-In this workshop, we will use topic modeling to reveal patterns in . We will do this together on a given dataset, after which you will do the same on a dataset of your choice
+In this workshop, we will use topic modeling to <!--TODO add research objective -->. In the context of the Q3 studio of the MSc Urbanism, this is meant to
 
-Topic modeling is an unsupervised machine learning method used to analise hidden topics in text data. We will use a set of newsletter articles about ...
+### Motivation
+
+As any quantitative method, topic modeling depends on data. The more, the better.
+
+### The dataset
+
+We will do this together on a given dataset,
+
+After that, you will do the same on a dataset of your choice.
+
+### What is topic modeling and why do we use it?
+
+Topic modeling is an unsupervised machine learning method used to reveal hidden topics in text data. We will use a set of newsletter articles about ...
 
 ## Pre-processing
 
-For the topic model, we will need a set of PDF files with texts in English that are OCR-ed. Scanned documents and some PDF exports are not readable and need to be pre-processed following these steps:
+Pre-processing is an essential yet challenging part of quantitative data analysis, especially when dealing with unstructured data such as text coming from different media. Hence, it is very (and too) often the reason why one might give up before even starting to analyse their data. Moreover, trying to analyse poorly pre-processed data will very likely lead to unreliable and dissappointing results. Do not underestimate and follow carefully these steps.
 
-1.  Install [ORCmyPDF](https://ocrmypdf.readthedocs.io/en/latest/installation.html#) for your operating system.
-2.  Using the terminal, navigate to the directory with \`cd /path/to/your/directory/\` where your PDFs are located and run the following command. Note that the language of the document, in our case \`nld\`, needs to be specified. See other language codes \[here\](<https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html>).
+Text data can be obtained in many formats, but it is widely available in PDFs. Reports, journal articles, scans of physical publications, posters, are examples of types of text data that are openly available in PDF format. We will focus on this type of data and we will discuss other types of data coming from different media at the end of the workshop.
+
+We start with a set of PDFs of newsletter articles in Dutch. We are facing two challenges: the text is not-machine-readable and we need it to be in English.
+
+Let's tackle the first issue. Scanned documents and some PDF documents with garbled text are not machine readable. Tools such as the Python application [OCRmyPDF](https://ocrmypdf.readthedocs.io/en/latest/) can help with this issue by rasterizing and then adding an optical character recognition (OCR) text layer to the document.
+
+1.  Install [OCRmyPDF](https://ocrmypdf.readthedocs.io/en/latest/installation.html#) for your operating system.
+2.  Using the terminal (macOS), navigate to the directory with `cd /path/to/your/directory/` where your PDFs are located and run the following command. Note that the language of the document, in our case `nld`, needs to be specified. See other language codes [here](https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html). Note that this requires all documents in the folder to be in the same language; if the documents are in different languages, then run the following command on documents separated into folders by language. This will not work with multi-lingual documents. The command will make the text in the existing PDFs machine readable.
 
 ``` sh
 find . -name '*.pdf' -exec ocrmypdf --force-ocr --language nld --clean '{}' '{}' \;
 ```
 
-3.  To translate the text from Dutch to English, we follow this pre-processing workflow:
+3.  Extract text from PDF with the following script.
 
-```{r setup-python}
-reticulate::virtualenv_create(envname = "myenv", version = "3.9:latest")
-reticulate::py_install("PyMuPDF == 1.21.0", envname = "myenv")
-reticulate::use_virtualenv("myenv")
-reticulate::source_python("extract-text-pdf-python.py")
+```{r extract-text-from-pdf, message=FALSE}
+# Set up Python for PDF text extraction
+virtualenv_create(envname = "myenv", version = "3.9:latest")
+py_install("PyMuPDF == 1.21.0", envname = "myenv")
+use_virtualenv("myenv")
+source_python("extract-text-from-pdf.py")
+
+# Get PDF file paths
+pdf_paths <- list.files("data", full.names = TRUE, pattern = "*.pdf$")
+
+# Extract text from PDFs
+text <- convert_pdf(pdf_paths) |> unlist()
 ```
 
-```{r extract-text-from-pdf}
-pdf_paths <- list.files("data", full.names = TRUE, pattern = "*.pdf$")
-text_list <- convert_pdf(pdf_paths) |> unlist()
+4.  If the text is in Dutch (or another language), translate it to English using the [DeepL API](https://www.deepl.com/pro-api?cta=header-pro-api) accessible in R via the \`deeplr\` package. Note that you need to create a developer account and the free plan is limited to 500,000 characters per month. This quota was sufficient for the translation of the 51 newsletter articles (`r sum(nchar(text))` characters in total) used in this analysis. Before running the script below:
+    -   Set up a [DeepL API](https://www.deepl.com/pro-api?cta=header-pro-api) developer account
+    -   Copy the Authentication Key from the settings in your [account page](https://www.deepl.com/your-account/summary)
+    -   Run `Sys.setenv(DEEPLR_AUTH_KEY = "PASTE_YOUR_AUTH_KEY_HERE")` , replacing `PASTE_YOUR_AUTH_KEY_HERE` with the Authentication Key you copied.
+
+```{r translate-filenames}
+# Create vector of file names to be used for saving the translated text
+doc_names <- str_sub(list.files("data", full.names = TRUE, pattern = "*.pdf$"), 1, -4L) |> paste0(".txt")
 ```
 
 ```{r translate, eval=FALSE}
-names <- stringr::str_sub(list.files("data", full.names = TRUE, pattern = "*.pdf$"), 1, -4L) |> paste0(".txt")
-
-# for (i in 1:length(text_list)) {
-#   text <- deeplr::translate2(text_list[[i]], target_lang = "EN", source_lang = "NL",
-#                    auth_key = "f27e1c45-0397-10e2-adf2-d132a9df6ace:fx") 
-#   writeLines(text, names[i])
-# }
-
+# Translate the text from PDFs and write translation to files
+for (i in 1:length(text)) {
+  text_temp <- deeplr::translate2(text[[i]], target_lang = "EN", source_lang = "NL",
+                   auth_key = Sys.getenv("DEEPLR_AUTH_KEY"))
+  writeLines(text_temp, doc_names[i])
+}
 ```
 
-```{r}
-text_EN <- vector(length = length(text_list)) 
+## Analysis
 
-for (i in 1:length(text_EN)) {
-  text_EN[i] <- readr::read_file(names[i])
+Create data frame with titles and texts.
+
+```{r}
+# Read texts in English from files
+if (length(list.files("data", pattern = "*.txt")) == 0) {
+  # Assuming text in English if translation is not found
+  text_EN <- text
+} else{
+  # Assuming texts were translated and are available as text files
+  text_EN <- vector(length = length(text)) 
+  for (i in 1:length(text_EN)) {
+    text_EN[i] <- read_file(doc_names[i])
+  }
 }
 
-df <- tibble::tibble(doc = stringr::str_sub(list.files("data", pattern = "*.txt"), 1, -4L), 
-                     text = text_EN) |> 
-  dplyr::mutate(text = stringr::str_replace_all(text, "^[0-9]*$", ""))
+df <- tibble(doc = str_sub(list.files("data", pattern = "*.txt"), 1, -4L), text_EN) |> 
+  mutate(text_EN = str_replace_all(text_EN, "^[0-9]*$", ""))
+```
 
+At this step, we define a list of stop words that occur in high frequency across the entire set of documents and are not expected to add meaning to the topics.
+
+```{r}
 custom_stop_words <- data.frame(word = c("nrc", "www.nrc.nl", "newspaper", "nieuws", 
                                          "news", "editorial", "credits",
                                          "netherlands", "https", "version",
                                          "reading", "list", "digital"))
+```
 
-words <- unnest_tokens(df, word, text) |>
+We split the entire corpus into words...
+
+```{r}
+words <- unnest_tokens(df, word, text_EN) |>
   filter(is.na(readr::parse_number(word))) |>  # Remove numbers
   anti_join(stop_words, by = "word") |>  # Remove English stop words
   anti_join(custom_stop_words, by = "word") |>  # Remove custom stop words
   dplyr::filter(nchar(word) >= 4)  # remove words of max. 3 characters
-
-  # count(word) |> 
-  # arrange(desc(n))
 ```
+
+... and have a quick look at the most frequently used words. We can already guess what this set of newsletter articles are about: frequently used words such as "emissions", "water", and "biodiversity" indicate different areas of concern present in articles. Note that we have 5022 rows, each representing one distinct word. This is the vocabulary we will provide as input to the topic model.
+
+```{r}
+words |> 
+  count(word) |>
+  arrange(desc(n))
+```
+
+Then we construct a Document Term Matrix needed as input to the topic model.
 
 ```{r}
 dtm <- words |>
@@ -84,26 +140,44 @@ dtm <- words |>
     cast_dtm(doc, word, n)
 ```
 
+We run the model with a given number of clusters. Note that defining the number of clusters is a critical decision. It can be defined empirically or qualitatively. As the former is computationally intensive and tends to result in a relatively high value, we choose the latter strategy, with a relatively low value that is easy to interpret. In general, the lower k is, the more interpretable it is, but too low might result in topics that are too general. The higher it is, the more accurate, but that comes at the cost of interpretability. So the choice of k is a matter of finding the balance between precision and interpretability.
+
 ```{r}
+# Determine the value of k
 k <- 5
 
+# Fit the LDA model
 lda <- LDA(dtm, k = k, method="Gibbs",
            control = list(seed = 2023, iter = 500, verbose = 100))
 
 # Extract beta and theta statistics from LDA model
-beta <- posterior(lda)$terms
-theta <- posterior(lda)$topics 
+beta <- posterior(lda)$terms  # Distribution of topics over words
+theta <- posterior(lda)$topics  # Distribution of documents over topics
 
-# Add pseudo-names to topics based on the top 5 words in each topic
+# Add pseudo-names to topics based on the top n words in each topic
+n_words <- 5  # How many top words to include in the pseudo-name?
+
 topic_names <- c()
-n_words <- 5
-
-for (i in 1:nrow(beta)) {
+for (i in 1:k) {
   name <- paste(names(head(sort(beta[i, ], decreasing = TRUE), n_words)), collapse = " ")
   topic_names <- c(topic_names, name)
 }
 
 topic_names
+```
+
+```{r}
+topics <- tidy(lda, matrix = "beta")
+
+topics |> 
+  group_by(topic)
+  
+words_count <- words |> 
+  count(word) |> 
+  arrange(desc(n))
+
+wordcloud::wordcloud(words$word, min.freq = 50)
+
 ```
 
 ```{r}
@@ -124,4 +198,3 @@ json <- createJSON(
 # Visualise topics model with LDAvis
 LDAvis::serVis(json)
 ```
-
