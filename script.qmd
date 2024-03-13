@@ -12,7 +12,8 @@ library(topicmodels)  # Topic modeling
 library(LDAvis)       # Interactive visualisation of LDA models
 library(reticulate)   # R interface with Python
 library(wordcloud)
-library(reshape2)
+require(reshape2)
+require(servr)
 ```
 
 ## Introduction
@@ -167,18 +168,12 @@ for (i in 1:k) {
 topic_names
 ```
 
-```{r}
-topics <- tidy(lda, matrix = "beta")
-
-topics |> 
-  group_by(topic)
-  
+```{r warning=FALSE}
 words_count <- words |> 
   count(word) |> 
   arrange(desc(n))
 
 wordcloud::wordcloud(words$word, min.freq = 50)
-
 ```
 
 ```{r}
