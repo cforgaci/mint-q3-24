@@ -1,0 +1,479 @@
+Î en et oe Sen [ 8
+SO MMy news | d IR Potcasts Digital Kran Q vj
+PPE UTD EENar Ger arte À
+|
+|
+% kk " fet Î
+PN AuenS PCO Sadee |
+rme you ee
+Photo Bram Petraeus
+ANALYSIS
+ Chicken farmer, corncrake, itch trail:
+in the nitrogen battle, every gram of emissions counts
+Nitrogen crisis The nitrogen battle, in the absence of structural solutions, is about small
+pieces of land. What if a stable in Flevoland emits just a little too much on paper for a
+possible habitat of an endangered bird further away?
+Rik Wassens, Wouter van Loon 15September2023 Reading Time 18 minutes
+Listening Reading List A
+WHAT IS THE NEWS?
+The RIVM wants to get rid of the management of the calculation program Aerius, with which
+the nitrogen load of nature areas is calculated. The
+Ministry looks at whether Aerius can be placed with another party,
+the ministry confirms to NRC.
+The RIVM has problems with Aerius being used for the implementation
+of policy, such as assessing permit applications. This conflicts
+with the "scientific task" of the RIVM.
+The two most obvious parties say they would
+program would rather not take over. BIJ12, the umbrella organization of
+ provinces, prefers to leave everything as it is, and the Rijksdienst voor Ondernemend
+Netherlands claims not to have the expertise in-house.
+Before Jaap Verwolf steps into his chicken house, he always knocks on the door.
+"Those white chickens scare quickly. If you don't let them know you're coming, they sit
+back in the barn and you won't see a chicken," he explains, stepping into his barn. The
+chickens, a few weeks old, might have heard Verwolf
+approaching, they still fly over each other to flee.
+Verwolf runs a rearing farm with some 70,000 chickens. They come in as
+chick one day old, and leave a few months later as layers, mostly
+to Germany. But 60,000 chickens are in the barn illegally - although the
+poultry farmer prefers not to call it that.
+His farm is located a few kilometers above Lelystad on the Visvijverweg; a long
+road with only large farms. Natural areas are nowhere to be
+not to be found. All the land was reclaimed from the
+sea, completely to be laid out as desired. Ideal for farmers who in the 1970s
+were driven out by growing cities and villages.
+But according to calculations by calculation tool Aerius, Verwolf's chickens are causing
+create an unacceptable increase of the nitrogen load on the nature reserve the
+Rhine branches, more than 20 kilometers away near Kampen. There, 800 square
+ meters of camgrass meadow, in which a protected bird can nest, the
+corncrake.
+It is about 0.22 moth of nitrogen per year, about three grams, a teaspoon, But even very
+But even very small amounts are inadmissible because nature is in too bad a state, If only I had
+If only I had worked on this nature permit years ago, Verwolf now thinks.
+But according to the province of Flevoland, a permit was not needed at all.
+necessary. After all, there was plenty of room here in the Flevopolder.
+Giant balsamien
+The smell is unmistakable. Whether there are cows, chickens or pigs, whoever walks
+It is a compound of nitrogen and hydrogen from manure.
+hydrogen, derived from manure. Throw it on the land, and in no time
+blackberry bushes sprout, nettles, cow parsley, giant balsam.
+Not every plant benefits. Sundew, orchids and heather only grow
+afs they are not overgrown by nitrogen eaters. Animals that depend
+on nitrogen-sensitive plants, as habitat or food source, are in dire straits.
+In the Netherlands, it is difficult to limit nitrogen emissions. Consider: on a small
+area are 17.5 million people, the largest seaport in
+Europe, a large airport, an enormous transport sector, an extensive road network
+road network ánd a gigantic livestock population. If there is space, it will be filled
+as quickly as possible, also in the nitrogen file.
+ And so the government wants to know exactly where nitrogen can and cannot be emitted.
+be emitted. But how do you find out?
+Nitrogen is lighter than air - blow ammonia into a balloon, release it and it rises
+up. Think of a barn or factory as a place where hundreds of those balloons are
+released. Where do they land? Preferably not in natural areas - but in residential areas,
+parking lots or meadows is not a problem.
+For years, the Netherlands made a simple estimate of the nitrogen load on
+nature with a "distance table," But wind direction, rain, the type of landscape,
+chemical processes in the air - it all affects where nitrogen
+ends up. With more details, was the idea, you can map the
+map the nitrogen space - and fill it.
+This idea still grips the Netherlands. As long as the government does not
+succeed in significantly reducing nitrogen emissions, the fight for space will be
+will be waged with nitrogen calculations in hand. It leads to lengthy
+bureaucratic procedures that revolve around no more than a few grams, around
+tenths of a mole per year.
+Twenty cows
+In 2017, Jaap Verwolf wants to expand his barns. He knocked on the door of the province of
+Flevoland with plans for a new chicken house with state-of-the-art
+ techniques. Substantial conveyor belts run under the chicken coops that remove the manure a few
+several times a week to remove the manure. That saves ammonia emissions.
+Verwolf is not the only one with plans. The entire Fish Pond Road is beating the
+rebuilding. Neighbor Arend Heida, a dairy farmer, also wants new stables. His
+father moved into the farm that is now his in the 1970s. Those stables are
+in need of replacement, and he wants to expand his business by twenty cows right away.
+To calculate the nitrogen load of the
+livestock farmers for the first time using a new calculation tool, with
+incredibly detailed results: Aerius. The companies do not even need a
+permit, the province said in 2017, so small is their nitrogen load. A
+"notification" under the then-new PAS, the Program Approach to Nitrogen, suffices.
+"I did want a permit," Verwolf says now, "but it just wasn't possible. You had
+really no choice."
+There is a brand new calculation model in 2015 * around which the entire nitrogen approach will be
+is being built around: Aerius. Nowhere in the world is nitrogen precipitation calculated in such
+detailed as in the Netherlands.
+But Aerius can do more. There is not only an application to calculate permit applications
+applications, but also a function that calculates how much measures will
+yield. And one that shows how the natural areas are doing. In fact
+Aerius thus becomes the government's accounting program.
+ The nitrogen accounting of the PAS works like a credit card: farmers and
+developers can "borrow" nitrogen, which will later be "repaid" with
+measures such as the removal of land with too much nitrogen ín natural areas,
+or less fertilization. In the PAS it becomes a legal obligation to submit a
+permit application to perform a calculation with Aerius.
+Wind direction, rainfall, the type of landscape, chemical processes in the air
+it all affects where nitrogen ends up.
+Everyone is extremely enthusiastic: the system is so easy to use and yet so
+accurate. "We were handing out candy and popsicles at the time," says Mark Wilmot, the
+inventor of Aerius. He works at engineering firm WING and in 2010 was
+seconded to the Ministry of Economic Affairs, which agriculture then
+under, to work on Aerius. Wilmot is proud when trade magazine De Boerderij nominates his
+invention was nominated in 2016 for the Computable Awards, the most important ICT
+prize in the Netherlands. The calculation tool wins in the Government category. Aerius seems to have achieved the
+impossible: farmers are happy and nature will recover - in time.
+recover - in time, that is.
+But in May 2019, PAS fails before the Council of State. The government issues all kinds of
+permits, but fails to actually reduce the nitrogen load.
+ reduction. The judge rules that not an ounce of nitrogen on nature may be added
+until a substantial reduction is achieved, The nitrogen bank is declared bankrupt.
+What remains is Aerius, a legally required system that calculates in detail the
+nitrogen precipitation, with no room to spend,
+After the Council of State's ruling, poultry farmer Jaap Verwolf still shrugs his
+shoulders still. "At the time we thought: it will all work out. The minister promised
+time and again: the PAS reporters will be legalized because they have acted 'in good
+in good faith,"
+But without a permit Verwolf can do nothing: not sell his business, not
+expand, cannot get a loan from the bank. Without the PAS notification, he falls back
+to his previous permit, but it is so old that no one can find it anymore.
+Verwolf found an older nuisance law permit himself, with space for
+10,000 chickens. "With that, it's impossible to make money," he says.
+At Verwalf, discomfort grows when the promised solution from the ministry
+fails to materialize: nothing is happening. Environmental organization Mobilisation for the Environment
+(MOB) has enforced in court that the province of Overijssel must take action
+take action against the PAS notifiers - perhaps Flevoland will be next.
+Verwolf now decides wêl make work of his permit. Only that 0.22 mol
+nitrogen on the habitat of the corncrake stands in the way.
+ Dronten
+ld
+Á
+ij"
+Seven farmers on Visvijverweg in Lelystad are largely illegal.
+After the Council of State scrapped the nitrogen policy in 2019, they have
+no permit they can fall back on. One of them is
+poultry farmer Jaap Verwolf.
+ His farm can get a permit if his business does not have a negative effect
+on nitrogen-sensitive nature within 25 kilometers of his farm.
+ The same applies to his neighbors.
+They are all obliged to make a calculation with the
+Aerius calculation program. If this shows that extra nitrogen falls on
+an (almost) overloaded area, it becomes difficult to obtain a permit.
+permit.
+ There is not much nitrogen-sensitive natural area nearby. But in
+Rijntakken nature reserve, near Kampen, there is one piece of overburdened
+nature, just within a 25-kilometer radius.
+ There is about 800 square meters of land where reed can grow.
+This is sensitive to nitrogen and is important for a protected bird: the corncrake.
+corncrake.
+ The contribution is not large. According to Aerius, 0.22 mole, or about 3
+grams of nitrogen from Jaap Verwolf's chickens lands on this piece of nature reserve.
+Below the line
+Few farmers would now want to nominate Aerius for an award.
+They now make their own calculations to show that the figures from the
+program are incorrect, are filing lawsuits against the use of Aerius.
+The judge dismissed the farmers' objections.
+But there is also well-founded criticism of Aerius. In March 2020, an advisory
+a committee led by Leen Hordijk, emeritus professor of
+Environmental Systems Analysis. He looked at Aerius at the request of the
+Ministry of Agriculture, Nature and Food Quality (LNV). The committee
+Hordijk concludes: the uncertainty margins of Aerius are huge *.
+That is not a problem if you want to know what the state of nature is at the national level
+state: sometimes nitrogen precipitation in practice will be a little more, sometimes a little less,
+and so the below-the-line estimate is pretty reliable.
+But for a permit application, where the nitrogen load of one farm is
+is being calculated, the model is "unsuitable," Hordijk judges. The average
+margin of uncertainty is 70 percent; at large distances, 100 percent is not at all
+strange. This provides "false security," Hordijk argues. The chance is too great that the
+permit application will be unfairly rejected - or granted.
+ Farmer Arend Heida's cow farm.
+Photo Bram Petraeus
+The professor emeritus suggests a series of solutions. Until then, the
+nitrogen precipitation of farmers on natural areas throughout the country was calculated. The
+Ministry decides after Hordijk's report to limit that to a radius of 25
+kilometers around a farm.
+Another important piece of advice from Hordijk is to no longer calculate on small areas of one
+hectare *size*. Choose a somewhat larger area, he advises.
+Some ecologists are opposed to this because useful information is lost,
+says ecologist Roland Bobbink of Research Center B-WARE. Bobbink was in
+several groups that advised the ministry on Aerius. Bobbink himself is
+in favor of Hordijk's proposal, but, he says, the level of detail has
+ law has a function, "The Dutch nature is simply fragmented, first you have
+First you have, for example, a pond of half an acre, surrounded by a strip
+wet heath of 50 meters and then a forest. I know areas where in one square
+kilometer ten habitat types already exist."
+But counting on a hectare also allows for more economic activity.
+Because if you count on larger areas, the most vulnerable nature gets the most
+weight: the strictest nitrogen standard will then apply to the entire larger area, which also contains
+less vulnerable nature. Then even less can be done, warns
+the Ministry and RIVM, among others.
+Nothing has been done with Hordijk's proposal.
+Picky bird
+Crex crex, the screeching call of the corncrake - often compared to a bank
+bank card rasping over a comb of hair - is equal to its Latin species name. The
+males often sit near each other, in places where their
+communal snaring carries far, sometimes as much as a kilometer. Overflying
+females are thus enticed to perch. "The males signal to the
+females: here is good," says quail king expert Kees Koffijberg.
+Useful, because the corncrake is difficult to spot, says Koffijberg,
+monitoring network coordinator at the SOVON bird expertise center and author of many studies
+about the bird. The corncrake, twenty to thirty centimeters long on remarkably
+ long legs, barely emerges during the breeding season from the knee-high
+grassland where it prefers to nest. The grass must not be too dense, or the
+corncrake can no longer move through it. The species count is done on
+warm evenings in May, by volunteers hustling at possible nesting sites.
+hustle.
+In the Netherlands, the corncrake is rare anymore, despite its protected
+status and ambitious goals. In the Rhine branches there should be about 160.
+but last year SOVON counted six there, in the whole country
+ninety. Suitable habitat is plentiful, says Koffijberg. But the grassland should
+not be mowed during the long breeding season of the corncrake,
+between May and August, which often goes wrong. If no
+sharp measures are taken, the species will no longer occur in the Netherlands, SOVON thinks.
+occur in the Netherlands, SOVON thinks.
+Guess the piece of land that Verwolf's Aertus calculation is on is in a
+potential habitat of the corncrake. In some places, reed canary grass
+which the corncrake sometimes breeds in. But it is
+nitrogen-sensitive, and the natural area is almost overused. Farmers or
+developers who want to start a new project in the area must
+therefore have to make an Aerius calculation.
+It involves some 800 square meters, located on a plot that dairy farmer
+Gijsbert van den Berg leases. His cows sometimes walk there, he fertilizes it and cuts
+the grass. In the middle of the plot, he picks a few blades near the carrots from the
+ field. No ridge grass, Van den Berg concludes. He points to the red base:
+"typical of English ryegrass."
+Ridgegrass
+Making a map is a delicate job, Little is as definitive as a line
+on paper. In the case of the maps in Aerius, it means separating between
+nitrogen sensitive and not nitrogen sensitive. Between: something can be done here, and
+maybe nothing,
+It is a task in the hands of the provinces. They have to make an inventory:
+where is which species potentially occurring? Where does reed canary grass grow, where are
+juniper thickets, where might lapwing or kingfisher nest? The province draws
+the lines.
+ The area where camgrass could grow, but is not growing now.
+Photo Bram Petraeus
+For maps of protected plants, ecologists often trek into the field. But
+for protected species, maps are made from large
+data files - with data on tree height, soil type and the
+water table - and the Habitat Suitability Index, another mathematical model *. In it
+preferences of protected species are linked to characteristics
+of the terrain and vegetation that may occur on it. The nitrogen-sensitive
+areas are forwarded to Aerius, because on those areas
+nitrogen precipitation must be taken into account.
+ The model does not provide a perfect estimate of the animal species and plants present, admits the province of Gelderland.
+The province of Gelderland, as 'forerunner' responsible for the Rijntakken
+for the Rijntakken nature reserve. Anyone who discovers that a map is incorrect,
+is invited to report it to the province.
+After the fall of the PAS and critical parliamentary questions, Gelderland sent in 2021
+ecologists for the first time to check the maps with habitats of animal species.
+to check. 75 percent of the areas visited were eventually found not to be
+nitrogen sensitive and were subsequently removed from Aerius, In the next round, that
+error rate will be lower, emphasizes the province, because ecologists first
+visited areas with the greatest doubts.
+Escape route
+From behind his desk, agricultural consultant Sjaak Van Schaik clicks open StreetSmart
+open, software with aerial photos and pictures of the landscape around roads. He sees
+the patch of possible ridge grass change over the years and quickly concludes: there
+tractors are driving over it. It's probably being fertilized. "Regular agricultural
+use," he notes in an ecological test.
+Typically, Van Schaik, who works at consultancy firm VanWestreenen, works for
+clients on the Veluwe. This often involves many moths of overrun on many
+hectares of nature, but in the case of Jaap Verwolf's poultry farm it is about a
+contribution to one small area. He immediately sees opportunities.
+ As long as he can convincingly demonstrate that that little bit of nitrogen has no effect on the
+corncrake, the permit can still go through,
+Nitrogen is "a very limited bottleneck" for the corncrake, Van
+Schaik. For the corncrake, management is much more important, for example, the fields
+no longer size, That should be done by the farmer who maintains the land. The
+Verwolf's nitrogen emissions have no influence on that, Van Schaik writes.
+The province goes along with this, Verwolf receives a provisional permit, The
+Van Schaik's ecological test also sets the province of Flevoland thinking.
+Verwolf's neighbors on Visvijverweg are also PAS reporters. And they have to be
+legalized, the national government instructed the provinces. So the neighbors soon received
+a mail from the province. Six bite - they engage their own consultant,
+who adopt Van Schaik's report word for word. At the end of November
+they submit their permit applications.
+A few days later they already receive good news: the province plans to give them a
+permit.
+Sure, you can criticize Aerius, the ministry acknowledges. But, they say:
+then there is an ecological test, which can show that the
+calculated nitrogen load does not lead to deterioration of nature. That makes
+an Aerius calculation not a Solomon's judgement, on the basis of the test a
+permit can still be granted if the Aertus calculation shows red figures,
+This is how Cok Verwolf got his permit,
+ The escape route is difficult though. A permit applicant
+has to arrange and pay for the assessment himself, Often larger
+natural areas, and ecologists have to analyze many hectares. That has to be paid out of
+own pocket. For large project developers or the state it is no
+problem to hire those expensive consultants. For individual livestock farmers that
+high price is more difficult to pay. The ecological test is therefore
+little used, even the ministry admits when asked. Verwolf and his
+were lucky: because only one hectare was involved, the costs were not too high.
+Another problem: a consultant was seldom in a position to present an outcome that was not convenient for the client.
+client is ill-suited to. Raoul Beunen, associate professor of Environmental
+Environmental Policy at the Open University, sees a risk in this: "Provinces
+often do not have the capacity to look very critically at those ecological tests.
+look at them."
+Environmental organization MOB, which filed a long series of lawsuits around nitrogen policy
+has therefore set its sights on the ecological test.
+They fear that in this way all kinds of small bits of extra nitrogen deposition
+will eventually be allowed. Beunen: "I think that is also a risk.
+It is easy to argue towards small bits that 'can be done anyway'. Those
+can add up to large sums, you also saw that with the PAS."
+Single chamber
+ At the end of August 2023, Jaap Verwolf is in court for the first time in his life.
+The administrative judge of the single chamber in Lelystad is considering the
+license of his company; Verwolf himself is not a party. The national lawyer defends
+on behalf of the province in granting the permit. On the other side is
+MOB, represented by counsel Stijn van Uffelen. He wants the
+Verwolf's permit be annulled,
+The case has long since ceased to revolve around the nitrogen from Verwolf's chickens. The
+issue is the ecological test: is it sufficient to issue a permit on,
+or should the province issue a "positive refusal"? In that case
+Verwolf's business legal only as long as conditions or the
+policy rules do not change.
+That is the purpose of MOB, Van Uffelen explained to the judge. If the farmers get a
+permit, with a high degree of legal certainty, it becomes much
+more difficult for the state or province to take nitrogen measures. "There are
+thousands of farms in the same situation, If those get a permit
+an effective nitrogen policy does become very difficult" MOB is now also pursuing
+cases against eight other livestock farmers in the province, including Verwolf's neighbors.
+Squeezed together
+Towards the end of each year, officials at afte provinces sit with
+squeezed together. It is the time when Aerius is updated, and everything can be
+be different in one fell swoop.
+ All new knowledge is incorporated into Aerius every year. Part of those
+changes are actual: does a farmer stop? Then his nitrogen emissions are removed from the
+calculations. Some of the changes are new insights: if better information about
+comes better information about emission sources, then that has consequences for the
+calculations around the border.
+It leads to unpredictable fluctuations. Pieces of nature that one year
+under pressure one year can, without anything having changed in reality, be well
+next year are well below the nitrogen standard. Nature where nothing seems to be
+may be a problem case a year later. This can have major implications
+for a positive refusal: due to the update of Aerius, a farm may
+suddenly tûch have an unacceptable nitrogen contribution.
+Something like this happens early this year to the farmers of the Fishpond Road, The piece of nature
+on which the permits hang, after the update of Aerius suddenly has
+no longer a nitrogen problem - the nitrogen load there is lower than previously
+calculated. Therefore, it now no longer counts in the Aerius calculation. However, 3.8
+kilometer away, the nitrogen load increases by 106.3
+mol. And that area is now wêl in the danger zone.
+ Nitrogen sensitive hexagons
+@ Not overloaded
+@ (Almost) overloaded
+Camps
+250 m
+When the neighbors on Fish Pond Road apply for a permit, it's
+all about the piece of nature west of Kampen.
+ But on Jan. 26, 2022, nitrogen calculation model Aerius will be updated.
+All kinds of data sources are updated annually and those results are then
+then processed in Aerius.
+ The nitrogen precipitation on the piece of nature that was a problem before,
+dropped in the new calculation and is no longer relevant for
+permit.
+ But a few kilometers away, the calculated nitrogen precipitation of a piece of
+a piece of nature by more than 100 mol. That area is now in the
+danger zone.
+ But for some farmers, this piece of nature falls outside the
+25 kilometers, and it does not count for the permit.
+For a moment everything seems to start all over again: is a new report needed
+for that other piece of nature? But after a site visit in February, the
+province: the two nature areas are similar, the old ecological test
+continues to apply.
+It is logical to update Aerius every year, thinks Wim van der Maas of the
+RIVM. "International treaties stipulate that every year we have to recalculate all emissions
+should be recalculated every year."
+This is where scientific precision clashes with practicability, sees Aerius inventor
+Mark Wilmot. Often Aerius is seen as one big scientific project
+in which the monitoring of the quality of nature and the granting of permits are
+are firmly linked together, he says. RIVM also sees it this way. "But in
+But in reality Aerius consists of all separate programs that use the same
+the same computational heart," Wilmot states. "Those programs can be developed separately
+The part from which a national picture emerges must comply with the
+international treaties, but the part from which a
+permit application is not. "Update the program for
+permits every three years, that gives a more stable policy," Wilmot believes.
+ But the RÉVM does not want to make an exception. "We say: we update everything,
+no cherry picking," says Van der Maas.
+Aerius is now part of a "government-wide redesign" of ICT. The
+RIVM wants to get rid of parts of Aerius in any case, confirms the Ministry of LNV
+asked. The institute has particular problems with the part that is
+used for permitting. The ministry is investigating which organization
+can best take on the management of Aerius then.
+ After updating Aerius, another piece of nature became relevant. There are sometimes
+sheep.
+Photo Bram Petraeus
+ "We really did laugh about it at times," says Verwolf at the
+kitchen table of neighbor Arend Heida. "Such a little bit of nitrogen on an area
+the size of a garden. What is it really about" Heida couldn't contain his laughter
+hold back when he heard that the corncrake had been
+had been heard. "He was just sitting here, under our cloud of nitrogen. "The lawsuit will take
+take years, Verwolf also realizes. Probably all the way to the Council
+of State.
+"It's not yet to the point where I say, I'll put a sign in the garden and emigrate," says
+Verwolf. "But if that permit doesn't get there, it will be done at some point."
+Goat trails
+How much time may go into a case for three grams? How many magistrates,
+officials, consultancies and lawyers have to deal with it?
+There is also discomfort at the Ministry of LNV about such cases, but there is
+no alternative, it sounds. Aerius, says the ministry, is simply the best
+we have.
+Nitrogen professor Jan Willem Erisman finds the battle over grams of nitrogen
+a waste of energy. "We put more effort into ited paths and legal
+constructs than real solutions," he says. The strict test of Aerius remains
+therefore necessary, he says, as a stick. "Only when the nitrogen load
+goes down structurally, can anything happen again" Also Stijn van Uffelen of MOB
+would prefer to spend his time differently, "I would rather work for the government on
+ policy to reduce nitrogen, but real solutions are not
+negotiable."
+The plans of outgoing prime minister Mark Rutte (VVD) to "accelerate" the nitrogen policy are
+"accelerate" are in jeopardy now that his cabinet has fallen. Where farmers, provinces
+and environmentalists compete for a teaspoon of nitrogen, a hectare of
+overburdened natural area still averages about 550 moles of nitrogen too much.
+Ecologist Roland Bobbink summarizes, "We put a lot of time into a little bit of
+nitrogen precipitation on one hectare. But we are not doing what is much more necessary: the
+nitrogen emissions need to come down quickly."
+NITROGEN
+For years, the Netherlands has been emitting more nitrogen than nature can tolerate. To
+reduce emissions, the government is targeting "peak emitters" -
+nitrogen emitters whose emissions land in sensitive natural areas. Many of
+these so-called peak emitters are livestock farms - these farms are often
+located close to sensitive natural areas. What is the perspective left for the
+livestock farmer in the Netherlands? And will they cooperate with the nitrogen approach? NRC
+Explores the nitrogen problem and the perspective for agriculture. View the
+overview
+ A version of this article also appeared in the Sept. 16, 2023, newspaper.
+ Share Mail the editors
+ My NRC
+NRC Websites
+About NRC
+Contact
+nic)
+Take one
+NRC Media House
+Editorial staff
+About us
+Working at
+Opinion Editor
+NRC Careers
+subscription
+Login
+NRC Webshop
+Copyright
+The Ombudsman
+NRC Readers' Fund
+Create an account
+Colophon
+Privacy
+Delivery conditions
+Digital newspaper
+AdSales
+My reading list
+Customer service
+NRC Code
+My Subscriptions
+Family reports
+Our app
+Archive
+Service & Delivery
+Advertising
+Newsletters
+NN W f ©) EH
+ 

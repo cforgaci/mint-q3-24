@@ -1,0 +1,127 @@
+---
+title: "Topic modeling with R"
+format: html
+---
+
+```{r setup}
+library(tidyverse)
+library(tidytext)
+library(topicmodels)
+library(LDAvis)
+```
+
+## Introduction
+
+In this workshop, we will use topic modeling to reveal patterns in . We will do this together on a given dataset, after which you will do the same on a dataset of your choice
+
+Topic modeling is an unsupervised machine learning method used to analise hidden topics in text data. We will use a set of newsletter articles about ...
+
+## Pre-processing
+
+For the topic model, we will need a set of PDF files with texts in English that are OCR-ed. Scanned documents and some PDF exports are not readable and need to be pre-processed following these steps:
+
+1.  Install [ORCmyPDF](https://ocrmypdf.readthedocs.io/en/latest/installation.html#) for your operating system.
+2.  Using the terminal, navigate to the directory with \`cd /path/to/your/directory/\` where your PDFs are located and run the following command. Note that the language of the document, in our case \`nld\`, needs to be specified. See other language codes \[here\](<https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html>).
+
+``` sh
+find . -name '*.pdf' -exec ocrmypdf --force-ocr --language nld --clean '{}' '{}' \;
+```
+
+3.  To translate the text from Dutch to English, we follow this pre-processing workflow:
+
+```{r setup-python}
+reticulate::virtualenv_create(envname = "myenv", version = "3.9:latest")
+reticulate::py_install("PyMuPDF == 1.21.0", envname = "myenv")
+reticulate::use_virtualenv("myenv")
+reticulate::source_python("extract-text-pdf-python.py")
+```
+
+```{r extract-text-from-pdf}
+pdf_paths <- list.files("data", full.names = TRUE, pattern = "*.pdf$")
+text_list <- convert_pdf(pdf_paths) |> unlist()
+```
+
+```{r translate, eval=FALSE}
+names <- stringr::str_sub(list.files("data", full.names = TRUE, pattern = "*.pdf$"), 1, -4L) |> paste0(".txt")
+
+# for (i in 1:length(text_list)) {
+#   text <- deeplr::translate2(text_list[[i]], target_lang = "EN", source_lang = "NL",
+#                    auth_key = "f27e1c45-0397-10e2-adf2-d132a9df6ace:fx") 
+#   writeLines(text, names[i])
+# }
+
+```
+
+```{r}
+text_EN <- vector(length = length(text_list)) 
+
+for (i in 1:length(text_EN)) {
+  text_EN[i] <- readr::read_file(names[i])
+}
+
+df <- tibble::tibble(doc = stringr::str_sub(list.files("data", pattern = "*.txt"), 1, -4L), 
+                     text = text_EN) |> 
+  dplyr::mutate(text = stringr::str_replace_all(text, "^[0-9]*$", ""))
+
+custom_stop_words <- data.frame(word = c("nrc", "www.nrc.nl", "newspaper", "nieuws", 
+                                         "news", "editorial", "credits",
+                                         "netherlands", "https", "version",
+                                         "reading", "list", "digital"))
+
+words <- unnest_tokens(df, word, text) |>
+  filter(is.na(readr::parse_number(word))) |>  # Remove numbers
+  anti_join(stop_words, by = "word") |>  # Remove English stop words
+  anti_join(custom_stop_words, by = "word") |>  # Remove custom stop words
+  dplyr::filter(nchar(word) >= 4)  # remove words of max. 3 characters
+
+  # count(word) |> 
+  # arrange(desc(n))
+```
+
+```{r}
+dtm <- words |>
+    count(doc, word, sort = TRUE) |>
+    cast_dtm(doc, word, n)
+```
+
+```{r}
+k <- 5
+
+lda <- LDA(dtm, k = k, method="Gibbs",
+           control = list(seed = 2023, iter = 500, verbose = 100))
+
+# Extract beta and theta statistics from LDA model
+beta <- posterior(lda)$terms
+theta <- posterior(lda)$topics 
+
+# Add pseudo-names to topics based on the top 5 words in each topic
+topic_names <- c()
+n_words <- 5
+
+for (i in 1:nrow(beta)) {
+  name <- paste(names(head(sort(beta[i, ], decreasing = TRUE), n_words)), collapse = " ")
+  topic_names <- c(topic_names, name)
+}
+
+topic_names
+```
+
+```{r}
+# Function to approximate the distance between topics
+svd_tsne <- function(x) tsne::tsne(svd(x)$u)
+
+# Convert DTM into JSON required by the LDAvis package
+json <- createJSON(
+  phi = beta,
+  theta = theta,
+  doc.length = rowSums(as.matrix(dtm)),
+  vocab = colnames(dtm),
+  term.frequency = colSums(as.matrix(dtm)),
+  mds.method = svd_tsne,
+  plot.opts = list(xlab="", ylab="")
+)
+
+# Visualise topics model with LDAvis
+LDAvis::serVis(json)
+```
+
