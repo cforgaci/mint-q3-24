@@ -12,6 +12,7 @@ library(topicmodels)  # Topic modeling
 library(LDAvis)       # Interactive visualisation of LDA models
 library(reticulate)   # R interface with Python
 library(wordcloud)
+library(reshape2)
 ```
 
 ## Introduction
@@ -53,7 +54,7 @@ find . -name '*.pdf' -exec ocrmypdf --force-ocr --language nld --clean '{}' '{}'
 
 ```{r extract-text-from-pdf, message=FALSE}
 # Set up Python for PDF text extraction
-virtualenv_create(envname = "myenv", version = "3.9.18")
+virtualenv_create(envname = "myenv", python = install_python())
 py_install("PyMuPDF == 1.21.0", envname = "myenv")
 use_virtualenv("myenv")
 source_python("extract-text-from-pdf.py")
