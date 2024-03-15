@@ -152,6 +152,16 @@
       ],
       "Hash": "cad6cf7f1d5f6e906700b9d3e718c796"
     },
+    "assertthat": {
+      "Package": "assertthat",
+      "Version": "0.2.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "tools"
+      ],
+      "Hash": "50c838a310445e954bc13f26f26a6ecf"
+    },
     "backports": {
       "Package": "backports",
       "Version": "1.4.1",
@@ -405,6 +415,20 @@
       ],
       "Hash": "59351f28a81f0742720b85363c4fdd61"
     },
+    "deeplr": {
+      "Package": "deeplr",
+      "Version": "2.0.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "httr",
+        "purrr",
+        "tibble",
+        "tokenizers",
+        "utf8"
+      ],
+      "Hash": "28f9b0df9adcd428a9b336a343752cb9"
+    },
     "digest": {
       "Package": "digest",
       "Version": "0.6.35",
@@ -613,6 +637,44 @@
         "methods"
       ],
       "Hash": "e0b3a53876554bd45879e596cdb10a52"
+    },
+    "googleAuthR": {
+      "Package": "googleAuthR",
+      "Version": "2.0.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "assertthat",
+        "cli",
+        "digest",
+        "gargle",
+        "httr",
+        "jsonlite",
+        "memoise",
+        "rlang",
+        "utils"
+      ],
+      "Hash": "2584be5812542ebadaf1f4fc26d50178"
+    },
+    "googleLanguageR": {
+      "Package": "googleLanguageR",
+      "Version": "0.3.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "assertthat",
+        "base64enc",
+        "googleAuthR",
+        "jsonlite",
+        "magrittr",
+        "purrr",
+        "stats",
+        "tibble",
+        "utils"
+      ],
+      "Hash": "618aac4f338baff62ad09ebb2838a003"
     },
     "googledrive": {
       "Package": "googledrive",
@@ -1018,6 +1080,22 @@
         "utils"
       ],
       "Hash": "8d1938040a05566f4f7a14af4feadd6b"
+    },
+    "openai": {
+      "Package": "openai",
+      "Version": "0.4.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "assertthat",
+        "glue",
+        "httr",
+        "jsonlite",
+        "lifecycle",
+        "magrittr"
+      ],
+      "Hash": "c5559137a0a6d61176b484ac436979da"
     },
     "openssl": {
       "Package": "openssl",
