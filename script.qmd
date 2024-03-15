@@ -13,21 +13,22 @@ include-in-header:
         white-space: pre-wrap !important;
       }
       </style>
+bibliography: references.bib
 ---
 
 ::: callout-note
-In this workshop, we will work in a computational notebook, an environment that combines narrative, executable code and output in one place. The document you are reading is a Quarto document that combines Markdown, a markup language with a simple syntax for text formatting, with code chunks written in the R programming language. If you are reading the source document `script.qmd` and want to see a rendered version of it, click on the Render button above this window.
+In this workshop, we will work in a computational notebook, an environment that combines narrative, executable code and output in one place. The document you are reading is a Quarto document that combines [Markdown](https://www.markdowntutorial.com/), a markup language with a simple syntax for text formatting, with code chunks written in the R programming language. If you are reading the source document `script.qmd` and want to see a rendered version of it, click on the Render button above this window or visit <https://cforgaci.github.io/mint2324Q3U/script.html>.
 :::
 
 ## Setup
 
 ### Software
 
-1.  During the workshop, we work in [a cloud instance of RStudio](http://rstudio-server-edu.bk.tudelft.nl:8787/) accessible through your web browser, so no installation is required. After the workshop, you will need to install [R, RStudio Desktop](https://posit.co/download/rstudio-desktop/) and [Python](https://www.python.org/downloads/) for your operating system.
+1.  During the workshop, we work in RStudio Server, a version of RStudio that is accessible through your web browser, so no installation is required. Visit [RStudio Server](http://rstudio-server-edu.bk.tudelft.nl:8787/) and log in with the credentials provided during the workshop. To follow the steps described in this document after the workshop, you will need to install [R, RStudio Desktop](https://posit.co/download/rstudio-desktop/) and [Python](https://www.python.org/downloads/) for your operating system.
 
-2.  In RStudio, create a new project from `File > New Project... > Version Control > Git` with the URL `https://github.com/cforgaci/mint2324Q3U.git` and project directory name `mint2324Q3U`. Browse to a location of your choice on your computer and click on `Create Project`. This will create a project directory populated with the data scripts used in the workshop.
+2.  After opening RStudio, create a new project from `File > New Project... > Version Control > Git` with the URL `https://github.com/cforgaci/mint2324Q3U.git` and project directory name `mint2324Q3U`. Browse to a location of your choice on your computer and click on `Create Project`. This will create a project directory populated with the data and scripts used in the workshop.
 
-3.  Open `script.qmd`. This will bring you to the computational notebook from where this document was rendered. Activate the visual editor and continue reading there.
+3.  Open the file `script.qmd` from the Files tab in Rstudio. This will open the computational notebook from where this document was rendered. Activate the visual editor as shown below and continue reading there.
 
 ![](fig/rstudio.png)
 
@@ -47,9 +48,6 @@ library(LDAvis)           # Interactive visualisation of LDA models
 require(servr)            # LDAvis dependency
 library(wordcloud)        # Generate word clouds
 require(reshape2)         # wordcloud dependency
-library(openai)           # Access ChatGPT from R
-library(googleLanguageR)  # Text translation with Google Translation API
-library(deeplr)           # Text translation with DeepL API
 ```
 
 ## Introduction
@@ -58,41 +56,58 @@ In this workshop, we will use topic modeling to reveal key topics in the Dutch n
 
 ### Motivation
 
-As any quantitative method, topic modeling depends on data. The more, the better.
+As any quantitative method, topic modeling depends on data. The more, the better. And, of course, the better fit to the research question, the better. As opposed to qualitative methods, quantitative analyses conducted in a computational environment have three main benefits:
+
+-   Reproducibility - you can re-run the analysis with the same results, and thus make your work verifiable;
+
+-   Automation - you can run the analysis on other data, allowing yourself to easily re-run your analysis when you collect more data;
+
+-   Scalability - run the analysis on (much) more data, overcoming the limitation of manual analysis.
+
+We will demonstrate these three benefits first by analysing a given dataset, then re-running the analysis with tweaked parameters and then running the same analysis with other data.
 
 ### The dataset
 
-We will do this together on a given dataset: 51 PDF documents containing news items mostly from the period 2022-2024 and from the Dutch NRC newsletter. After that, you will run the analysis in this document on a dataset of your choice. Run the following code chunk with the default value.
+![](fig/news-2.jpg)
+
+We will start with a dataset of 51 PDF documents containing news items, mostly from the period 2022-2024 and from the Dutch NRC newsletter. Let's run the following code with the default value.
 
 ```{r}
 # What data will you work with? Use one of the following two values:
 # - "nrc" if you want to use the default dataset
 # - "mydata" if you want to use your own dataset
 data_choice <- "nrc"
+data_root <- paste0("data/", data_choice)
 ```
 
-### What is topic modeling and why do we use it?
+### Topic modeling: what is it and why do we use it?
 
-Topic modeling is an unsupervised machine learning method used to reveal hidden topics in text data. We will use a set of newsletter articles about ...
+We will use a selection of newsletter articles about farming communities in the Netherlands and we want to understand what are the main areas of concern in those news items. Topic modeling is an unsupervised machine learning method used to reveal hidden topics in text data, especially useful when large amounts of data are available, e.g., from social media or newsletter archives.
+
+We will work with one of the most popular topic models called latent Dirichlet allocation (LDA), a probabilistic model in which every document is a distribution over a given number of topics and every topic is a distribution over the vocabulary, i.e., all distinct words used in all documents. The details of LDA are outside the scope of this workshop; if you want to know more, you can read more in [@blei2012].
 
 ## Pre-processing
 
-Pre-processing is an essential yet challenging part of quantitative data analysis, especially when dealing with unstructured data such as text coming from different media. Hence, it is very (and too) often the reason why one might give up before even starting to analyse their data. Moreover, trying to analyse poorly pre-processed data will very likely lead to unreliable and dissappointing results. Do not underestimate and follow carefully these steps.
+Before fitting a topic model, we need to make sure that our data is in the right form. Pre-processing in general is an essential yet challenging part of quantitative data analysis, especially when dealing with unstructured data such as text coming from different media. Hence, it is very (and too) often the reason why one might give up before even starting to analyse their data. Moreover, trying to analyse poorly pre-processed data will very likely lead to unreliable and disappointing results. Do not underestimate and follow carefully these steps.
 
-Text data can be obtained in many formats, but it is widely available in PDFs. Reports, journal articles, scans of physical publications, posters, are examples of types of text data that are openly available in PDF format. We will focus on this type of data and we will discuss other types of data coming from different media at the end of the workshop.
+Text data can be obtained in many formats, but it is widely available in PDFs. Reports, journal articles, scans of physical publications, posters, are examples of types of text data that are openly available in PDF format. We will focus on this type of data and we will discuss other types of data coming from different media in other parts of the workshop.
 
 We start with a set of PDFs of newsletter articles in Dutch. We are facing two challenges: the text is not-machine-readable and we need it to be in English.
 
 Let's tackle the first issue. Scanned documents and some PDF documents with garbled text are not machine readable. Tools such as the Python application [OCRmyPDF](https://ocrmypdf.readthedocs.io/en/latest/) can help with this issue by rasterizing and then adding an optical character recognition (OCR) text layer to the document.
 
+::: callout-note
+Note that points 1 and 2 below are specific to this dataset and that you can skip them if your data is machine-readable (it is if you can select and copy text from it).
+:::
+
 1.  Install [OCRmyPDF](https://ocrmypdf.readthedocs.io/en/latest/installation.html#) for your operating system.
-2.  Using the terminal (macOS), navigate to the directory with `cd /path/to/your/directory/` where your PDFs are located and run the following command. Note that the language of the document, in our case `nld`, needs to be specified. See other language codes [here](https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html). Note that this requires all documents in the folder to be in the same language; if the documents are in different languages, then run the following command on documents separated into folders by language. This will not work with multi-lingual documents. The command will make the text in the existing PDFs machine readable.
+2.  Using the terminal, navigate to the directory with `cd /path/to/your/directory/` where your PDFs are located and run the following command. Note that the language of the document, in our case `nld`, needs to be specified. See other language codes [here](https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html). Note that this requires all documents in the folder to be in the same language; if the documents are in different languages, then run the following command on documents separated into folders by language. This will not work with multi-lingual documents. The command will make the text in the existing PDFs machine readable.
 
 ``` sh
 find . -name '*.pdf' -exec ocrmypdf --force-ocr --language nld --clean '{}' '{}' \;
 ```
 
-3.  Extract text from PDF with the following script.
+3.  Extract text from PDF with the following script. This sets up and calls the Python package PyMuPDF.
 
 ```{r extract-text-from-pdf, message=FALSE}
 # Set up Python for PDF text extraction
@@ -101,71 +116,32 @@ py_install("PyMuPDF == 1.21.0", envname = "myenv")
 use_virtualenv("myenv")
 source_python("extract-text-from-pdf.py")
 
-data_root <- paste0("data/", data_choice)
-
 # Get PDF file paths
 pdf_paths <- list.files(data_root, full.names = TRUE, pattern = "*.pdf$")
 
 # Extract text from PDFs
 text <- convert_pdf(pdf_paths) |> unlist()
-
-# # TEMP: Missing texts
-# pdf_paths2 <- c(
-#   "Als de boer stopt, kan FrieslandCampina zijn fabriek uitbreiden - NRC",
-#   "Belgische blokkades trekken ook Nederla..",
-#   "Bijna niemand wil het nog hebben over s..",
-#   "Boeren krijgen uitstel, maar Europese landbouwopgave blijft - NRC",
-#   "Boeren- en klimaatdemonstranten niet on.."
-# )
-# text2 <- convert_pdf(paste0("data/nrc/", pdf_paths2, ".pdf")) |> unlist()
 ```
+
+::: callout-note
+Note that point 4 below is specific to this dataset and that you can skip it if your data is in English. For the default dataset, the translated texts are already included in the dato folder in TXT format.
+:::
 
 4.  If the text is in Dutch (or another language), translate it to English using the [DeepL API](https://www.deepl.com/pro-api?cta=header-pro-api) accessible in R via the \`deeplr\` package. Note that you need to create a developer account and the free plan is limited to 500,000 characters per month. This quota was sufficient for the translation of the 51 newsletter articles (`r sum(nchar(text))` characters in total) used in this analysis. Before running the script below:
     -   Set up a [DeepL API](https://www.deepl.com/pro-api?cta=header-pro-api) developer account
     -   Copy the Authentication Key from the settings in your [account page](https://www.deepl.com/your-account/summary)
     -   Run `Sys.setenv(DEEPLR_AUTH_KEY = "PASTE_YOUR_AUTH_KEY_HERE")` , replacing `PASTE_YOUR_AUTH_KEY_HERE` with the Authentication Key you copied.
-
-```{r translate-filenames}
-# Create vector of file names to be used for saving the translated text
-doc_names <- str_sub(list.files(data_root, full.names = TRUE, pattern = "*.pdf$"), 1, -4L) |> paste0(".txt")
-```
-
-```{r translate, eval=FALSE}
-# Translate the text from PDFs and write translation to files
-for (i in 1:length(text)) {
-  text_temp <- deeplr::translate(text[[i]], target_lang = "EN", source_lang = "NL",
-                   auth_key = Sys.getenv("DEEPLR_AUTH_KEY"))
-  writeLines(text_temp, doc_names[i])
-}
-
-# # TEMP translate extra files
-# for (i in 1:length(pdf_paths2)) {
-#   text_temp <- deeplr::translate(text2[[i]], target_lang = "EN", source_lang = "NL",
-#                    auth_key = Sys.getenv("DEEPLR_AUTH_KEY"))
-#   writeLines(text_temp, paste0("data/", pdf_paths2, ".txt")[i])
-# }
-```
-
-```{r eval=FALSE}
-# googleLanguageR::gl_auth("~/mint2324q3u-baf951fb3aa5.json")
-# text_EN_google <- gl_translate(text, target = "en")$translatedText
-
-doc_names2 <- paste0("data/nrc/google-", str_sub(list.files(data_root, full.names = TRUE, pattern = "*.pdf$"), 10, -4L), ".txt")
-
-for (i in 1:length(text_EN_google)) {
-  writeLines(text_EN_google[i], doc_names2[i])
-}
-
-sum(nchar(text_EN_google))
-```
+    -   Run the `translate-deepl.R` script in this project
 
 ## Text analysis
 
-Create data frame with titles and texts.
+We first create a data frame with titles and texts in two separate columns. A data frame is the term used in R or Python for a table representation of data in which rows are observations (newsletter articles, in our case) and columns are variables.
 
 ```{r df}
+doc_names <- list.files(data_root, full.names = TRUE, pattern = "*.txt")
+
 # Read texts in English from files
-if (length(list.files(data_root, pattern = "*.txt")) == 0) {
+if (length(doc_names) == 0) {
   # Assuming text in English if translation is not found
   text_EN <- text
 } else{
@@ -180,7 +156,7 @@ df <- tibble(doc = str_sub(list.files(data_root, pattern = "*.txt"), 1, -4L), te
   mutate(text_EN = str_replace_all(text_EN, "^[0-9]*$", ""))
 ```
 
-At this step, we define a list of stop words that occur in high frequency across the entire set of documents and are not expected to add meaning to the topics.
+At this step, we define a list of stop words that occur in high frequency across the entire set of documents and are not expected to add meaning to the topics. We will iterate on this as we examine the top words below.
 
 ```{r swcustom}
 custom_stop_words <- data.frame(word = c("nrc", "www.nrc.nl", "newspaper", "nieuws", 
@@ -189,7 +165,7 @@ custom_stop_words <- data.frame(word = c("nrc", "www.nrc.nl", "newspaper", "nieu
                                          "reading", "list", "digital"))
 ```
 
-We split the entire corpus into words...
+LDA works with tokens, that is units of text to be analised. We will use words as tokens. We split the entire set of documents into words.
 
 ```{r tokens, warning=FALSE}
 words <- unnest_tokens(df, word, text_EN) |>
@@ -199,15 +175,23 @@ words <- unnest_tokens(df, word, text_EN) |>
   dplyr::filter(nchar(word) >= 4)  # remove words of max. 3 characters
 ```
 
-... and have a quick look at the most frequently used words. We can already guess what this set of newsletter articles are about: frequently used words such as "emissions", "water", and "biodiversity" indicate different areas of concern present in articles. Note that we have 5022 rows, each representing one distinct word. This is the vocabulary we will provide as input to the topic model.
+Now we have a quick look at the most frequently used words. We can already guess what this set of newsletter articles is about: frequently used words such as "emissions", "water", and "biodiversity" indicate different areas of concern present in articles. If we notice high-frequency words that do not add meaning we add them to `custom_stop_words` above and re-run the `swcustom`, `tokens` and `tokens-rank` code chunks until we only see meaningful words. The list of custom stop words is the result of such an iterative process.
 
 ```{r tokens-rank}
-words |> 
-  count(word) |>
+words_count <- words |> 
+  count(word) |> 
   arrange(desc(n))
+
+words_count
 ```
 
-Then we construct a Document Term Matrix needed as input to the topic model.
+We can also quickly visualise the top words in the form of a wordcloud.
+
+```{r wordcloud, warning=FALSE}
+wordcloud::wordcloud(words$word, min.freq = 50)
+```
+
+Note that we have 5022 rows in, each representing one distinct word. This is the vocabulary we will provide as input to the topic model in the form of a Document Term Matrix.
 
 ```{r dtm}
 dtm <- words |>
@@ -215,7 +199,7 @@ dtm <- words |>
     cast_dtm(doc, word, n)
 ```
 
-We run the model with a given number of clusters. Note that defining the number of clusters is a critical decision. It can be defined empirically or qualitatively. As the former is computationally intensive and tends to result in a relatively high value, we choose the latter strategy, with a relatively low value that is easy to interpret. In general, the lower k is, the more interpretable it is, but too low might result in topics that are too general. The higher it is, the more accurate, but that comes at the cost of interpretability. So the choice of k is a matter of finding the balance between precision and interpretability.
+We run the model with a given number of clusters `k`. Note that defining the number of clusters is a critical decision. `k` can be defined empirically or qualitatively. As the former is computationally intensive and tends to result in a relatively high value, we choose the latter strategy, with a relatively low value that is easy to interpret. In general, the lower `k` is, the more interpretable it is, but too low might result in topics that are too general. Conversely, the higher it is, the more accurate, but that comes at the cost of interpretability. So the choice of `k` is a matter of finding the balance between detail and interpretability.
 
 ```{r lda}
 # Determine the value of k
@@ -241,17 +225,9 @@ for (i in 1:k) {
 topic_names
 ```
 
-```{r wordcloud, warning=FALSE}
-words_count <- words |> 
-  count(word) |> 
-  arrange(desc(n))
-
-wordcloud::wordcloud(words$word, min.freq = 50)
-```
-
 ## Interpretation
 
-In important final step of topic modeling is the interpretation of the results. This is a step that requires you, the person conducting the analysis, to qualitatively describe the topics. This boils down to naming the topics and describing them. The pseudo-naming we used so far is an automated way to give an idea of what each topic is about, but we might want to further abstract those to overarching topics. This can be straightforward for some topics and challenging for others.Large Language Models like ChatGPT are very suitable for such a task. We will use the free version (3.5) of ChatGPTY with a prompt generated below using the parameters set in this document. Run the code below and copy/paste its output in a new chat in ChatGPT.
+In important final step of topic modeling is the interpretation of the results. This is a step that requires you, the person conducting the analysis, to qualitatively describe the topics. This boils down to naming the topics and describing them. The pseudo-naming we used above is an automated way to give an idea of what each topic is about, but we might want to further abstract those to overarching topics. This can be straightforward for some topics and challenging for others. Large Language Models like ChatGPT are very suitable for such a task. We will use the free version (3.5) of ChatGPT with a prompt generated below using the parameters set in this document. Run the code below and copy/paste its output in a new chat in ChatGPT.
 
 ```{r prompt}
 keywords <- vector(length = k)
@@ -265,40 +241,15 @@ cat(paste0("I have ", k, " topics, each described by ", n_words,
     sep = "")
 ```
 
-Run the next code chunk to see a variant of ChatGPT's answer to our prompt. This will be slightly different from the answer you get from ChatGPT, but it is unlikely that it is too different.
+The output below is a variant of ChatGPT's answer to our prompt. This will be slightly different from the answer you get from ChatGPT.
 
-::: callout-note
-The code below (not run) was used to access the ChatGPT API from R, which is a paid service with an account on the [OpenAI Platform](https://platform.openai.com/). Using [the web version of ChatGPT 3.5](https://chat.openai.com/) is free and sufficient for this task.
-:::
+> 1.  Environmental Impact: Nitrogen emissions, nature, farmers, permit - Discussing the environmental impact of nitrogen emissions on nature and the role of farmers in obtaining permits.
+> 2.  Resource Management: Water, soil, energy level, time - Exploring strategies for managing resources efficiently, including water, soil, and energy, within the constraints of time.
+> 3.  Public Services: Service delivery, Dutch opinion, hours - Analyzing public service delivery based on Dutch opinion and the impact of working hours.
+> 4.  Biodiversity Conservation: Nature, biodiversity, land Aerius, species - Addressing the conservation of biodiversity in nature, land Aerius, and various species.
+> 5.  European Agriculture: Farmers, agriculture, European, agricultural time - Evaluating the role of farmers in European agriculture and the necessary time investment for sustainable practices.
 
-```{r answer}
-# # Submit request to ChatGPT
-# answer = create_chat_completion(
-#   model = "gpt-3.5-turbo",
-#   messages = list(
-#     list(
-#       "role" = "user",
-#       "content" = "I have 5 topics, each described by 5 words. The keywords are as follows:
-# - The words for Topic 1 are: nitrogen emissions nature farmers permit.
-# - The words for Topic 2 are: water soil energy level time.
-# - The words for Topic 3 are: service delivery dutch opinion hours.
-# - The words for Topic 4 are: nature biodiversity land aerius species.
-# - The words for Topic 5 are: farmers agriculture european agricultural time.
-# How would you name these topics? Use maximum two words to name the topics and provide a one-sentence description for each."
-#     )
-#   )
-# )
-
-# Display answer
-# cat(answer$choices$message.content)
-cat("1. Environmental Impact: Nitrogen emissions, nature, farmers, permit - Discussing the environmental impact of nitrogen emissions on nature and the role of farmers in obtaining permits.
-2. Resource Management: Water, soil, energy level, time - Exploring strategies for managing resources efficiently, including water, soil, and energy, within the constraints of time.
-3. Public Services: Service delivery, Dutch opinion, hours - Analyzing public service delivery based on Dutch opinion and the impact of working hours.
-4. Biodiversity Conservation: Nature, biodiversity, land Aerius, species - Addressing the conservation of biodiversity in nature, land Aerius, and various species.
-5. European Agriculture: Farmers, agriculture, European, agricultural time - Evaluating the role of farmers in European agriculture and the necessary time investment for sustainable practices.")
-```
-
-LDAvis is a package that can generate interactive visualisation of the topics in a topic model. Running this code chunk will open a browser window that allows you to explore topic-level top words as well as the relevance of individual words across topics.
+The interpretation of the topic model can be further aided by LDAvis, a package that can generate interactive visualisation of the topics in a topic model. Running the following code chunk will open a browser window that allows you to explore topic-level top words as well as the relevance of individual words across topics.
 
 ```{r ldavis, eval=FALSE}
 # Function to approximate the distance between topics
@@ -321,15 +272,13 @@ LDAvis::serVis(json)
 
 ## Now it's your turn!
 
-### Tweaking the parameters of the topic model
+### Exercise 1: Tweaking the parameters of the topic model
 
 First, try tweaking the parameters used in this report, by changing the value of `k` (number of topics) on line 222 and `n_words` (number of words to be included in pseudonaming the topics) on line 233. Then paste the newly generated prompt into ChatGPT. Does the answer make sense? If needed continue the conversation with ChatGPT to refine its answers.
 
 Note: whenever you make a change in this document, you need to run all code chunks in this document in sequence, from top to bottom.
 
-## Working with your data
-
-### Exercise 1. Topic Modeling
+### Exercise 2: Working with your data
 
 Now, if the methods and workflows are clear, you are ready to run the document on your data. You do that as follows:
 
@@ -343,6 +292,8 @@ Now, if the methods and workflows are clear, you are ready to run the document o
 
 5.  Run the code chunks in this document from top to bottom to see the results of your analysis.
 
-### Exercise 2. Visualising scraped data
+<!--# TODO to be added at the end of Part 1 on web scraping -->
+
+### Exercise 1. Visualising scraped data
 
 You've been scraping data throughout the workshop. Now it is time to visualise it. Follow the steps from the web scraping tutorial to visualise the Facebook or X data you scraped during the workshop in a word cloud. What do you see? How would you describe the discourse of/about farming communities on social media?
