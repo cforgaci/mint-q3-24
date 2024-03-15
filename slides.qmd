@@ -15,63 +15,73 @@ footer: "Topic Modeling with R"
 
 ## Workshop outline {.smaller}
 
-1. Tutorial: Scraping data from social media (Shuyu) - 30 min
-2. Tutorial: Finding topics in Dutch news (Claudiu) - 1 hour
-3. Exercise: Topic modeling with your own data - 1 hour
+1.  Tutorial: Scraping data from social media (Shuyu) - 30 min
+2.  Tutorial: Finding topics in Dutch news (Claudiu) - 1 hour
+3.  Exercise: Topic modeling with your own data - 1 hour
 
 # Part 1: Scraping data from social media {.center background-color="#00A6D6"}
 
 # The question {.center background-color="#00A6D6"}
+
 What are the main farming-related topics discussed in social media?
 
-# The data {.center}
+# The data {.center background-image="fig/x.png"}
+
 Social media data<br>from Facebook or X
 
 ## Why social media data?
 
+In the digital media era, social media platforms and websites serve as valuable sources for collecting user-generated content, which in turn represents the voices and opinions of citizens. Twitter (X)'s real-time nature and vast array of tweets cover diverse topics, providing insights into current events, public reactions, and emerging trends. Similarly, Facebook's extensive user base and features like status updates and comments offer rich data on user experiences and interactions. 
+
 # The approach {.center background-color="#00A6D6"}
+
 Web scraping using the Chrome extension<br><b>[Web Data Research Assistant](https://southampton.ac.uk/~lac/WebDataResearchAssistant/)</b>
 
 ## What is web scraping?
 
+Web scraping is the process of extracting data from websites. It involves automated techniques to collect information from web pages or social media website, typically in formats such as HTML, XML, or JSON. Web scraping allows you to retrieve specific data elements, such as text, images, or tables, from web pages and store them for analysis or other purposes.
+
 # Part 2: Finding topics in Dutch news {.center background-color="#00A6D6"}
 
 # The question {.center background-color="#00A6D6"}
+
 What are the main farming-related topics discussed in Dutch news since 2022?
 
 # The data {.center background-image="fig/news.jpg"}
+
 51 newspaper articles<br>in Dutch
 
 # The approach {.center background-color="#00A6D6"}
+
 Quantitative analysis:<br>Topic modeling
 
 ## Quantitative analysis
-::: {.incremental}
-<b>Pros</b>:  
 
-- Reproducible - re-run the analysis with the same results
-- Automated - run the analysis on other data
-- Scalable - run the analysis on (much) more data
+::: incremental
+<b>Pros</b>:
 
-<b>Cons</b>:  
+-   Reproducible - re-run the analysis with the same results
+-   Automated - run the analysis on other data
+-   Scalable - run the analysis on (much) more data
 
-- Requires knowledge of statistics
-- Results depend on the amount and quality of data available
+<b>Cons</b>:
 
+-   Requires knowledge of statistics
+-   Results depend on the amount and quality of data available
 :::
 
 ## The method
+
 Topic modeling using LDA as a way to reveal latent topics inunstructured text data.
 
-- documents are a mixture of topics
-- topics are a mixture of words
+-   documents are a mixture of topics
+-   topics are a mixture of words
 
 # Go to [edu.nl/ph3a6](edu.nl/ph3a6) {background-color="#00A6D6"}
 
-And log in to RStudio Server with:  
+And log in to RStudio Server with:
 
-- the username from your handout
-- the password <b>Rban1smGuest</b>
+-   the username from your handout
+-   the password <b>Rban1smGuest</b>
 
 # 
-
