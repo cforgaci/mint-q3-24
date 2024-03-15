@@ -1,5 +1,5 @@
 ---
-title: "Mining the Dutch news about farming communities"
+title: "What do the Dutch news say about farming communities?"
 subtitle: "A Topic Modeling Approach using R"
 author: "Claudiu Forgaci"
 date: "20 March 2024"
