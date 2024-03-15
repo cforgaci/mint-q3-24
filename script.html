@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Claudiu Forgaci">
+<meta name="dcterms.date" content="2024-03-20">
 
-<title>Topic modeling with R</title>
+<title>Mining the Dutch news about farming communities</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -71,22 +73,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">Setup</a>
+  <ul class="collapse">
+  <li><a href="#software" id="toc-software" class="nav-link" data-scroll-target="#software">Software</a></li>
+  </ul></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#motivation" id="toc-motivation" class="nav-link" data-scroll-target="#motivation">Motivation</a></li>
+  <li><a href="#the-dataset" id="toc-the-dataset" class="nav-link" data-scroll-target="#the-dataset">The dataset</a></li>
+  <li><a href="#what-is-topic-modeling-and-why-do-we-use-it" id="toc-what-is-topic-modeling-and-why-do-we-use-it" class="nav-link" data-scroll-target="#what-is-topic-modeling-and-why-do-we-use-it">What is topic modeling and why do we use it?</a></li>
+  </ul></li>
+  <li><a href="#pre-processing" id="toc-pre-processing" class="nav-link" data-scroll-target="#pre-processing">Pre-processing</a></li>
+  <li><a href="#text-analysis" id="toc-text-analysis" class="nav-link" data-scroll-target="#text-analysis">Text analysis</a></li>
+  </ul>
+</nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Topic modeling with R</h1>
+<h1 class="title">Mining the Dutch news about farming communities</h1>
+<p class="subtitle lead">A Topic Modeling Approach using R</p>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Claudiu Forgaci </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 20, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -96,92 +130,197 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>For this analysis, we will need to load the following R packages.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)    <span class="co"># Data manipulation and visualisation</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)     <span class="co"># Text manipulation</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(topicmodels)  <span class="co"># Topic model</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(LDAvis)       <span class="co"># Interactive visualisation of LDA models</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)   <span class="co"># R interface with Python</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In this workshop, we will work in a computational notebook, an environment that combines narrative, executable code and output in one place. The document you are reading is a Quarto document that combines Markdown, a markup language with a simple syntax for text formatting, with code chunks written in the R programming language. If you are reading the source document <code>script.qmd</code> and want to see a rendered version of it, click on the Render button above this window.</p>
+</div>
+</div>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<section id="software" class="level3">
+<h3 class="anchored" data-anchor-id="software">Software</h3>
+<ol type="1">
+<li><p>During the workshop, we work in <a href="http://rstudio-server-edu.bk.tudelft.nl:8787/">a cloud instance of RStudio</a> accessible through your web browser, so no installation is required. After the workshop, you will need to install <a href="https://posit.co/download/rstudio-desktop/">R, RStudio Desktop</a> and <a href="https://www.python.org/downloads/">Python</a> for your operating system.</p></li>
+<li><p>Open RStudio and create a new project from <code>File &gt; New Project... &gt; Version Control &gt; Git</code> with the URL <code>https://github.com/cforgaci/mint2324Q3U.git</code> and project directory name <code>mint2324Q3U</code>. Browse to a location of your choice on your computer and click on <code>Create Project</code>. This will create a project directory populated with the data scripts used in the workshop.</p></li>
+<li><p>Open <code>script.qmd</code>. This will bring you to the computational notebook from where this document was rendered. Continue reading there.</p></li>
+<li><p>For our analysis, we will need to load a number of R packages that extend the out-of-the-box functionality of R. Run the code chunk below by pressing on the green arrow in its upper right corner. If this is the first time you run the script, it will take a couple of minutes until all packages are installed.</p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install packages</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="st">"renv"</span> <span class="sc">%in%</span> <span class="fu">installed.packages</span>()) <span class="fu">install.packages</span>(<span class="st">"renv"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">restore</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>- The library is already synchronized with the lockfile.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load packages</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)        <span class="co"># Data manipulation and visualisation</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)       <span class="co"># R interface with Python</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)         <span class="co"># Text manipulation</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(topicmodels)      <span class="co"># Topic modeling</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(LDAvis)           <span class="co"># Interactive visualisation of LDA models</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(servr)            <span class="co"># LDAvis dependency</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(wordcloud)        <span class="co"># Generate word clouds</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(reshape2)         <span class="co"># wordcloud dependency</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(openai)           <span class="co"># Access ChatGPT from R</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(googleLanguageR)  <span class="co"># Text translation with Google Translation API</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(deeplr)           <span class="co"># Text translation with DeepL API</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>In this workshop, we will use topic modeling to <!--TODO add research objective -->. We will do this together on a given dataset, after which you will do the same on a dataset of your choice</p>
+<p>In this workshop, we will use topic modeling to <!--TODO add research objective -->. In the context of the Q3 studio of the MSc Urbanism, this is meant to</p>
+<section id="motivation" class="level3">
+<h3 class="anchored" data-anchor-id="motivation">Motivation</h3>
+<p>As any quantitative method, topic modeling depends on data. The more, the better.</p>
+</section>
+<section id="the-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="the-dataset">The dataset</h3>
+<p>We will do this together on a given dataset,</p>
+<p>After that, you will do the same on a dataset of your choice.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What data will you work with? Use one of the following two values:</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># - "nrc" if you want to use the default dataset</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># - "mydata" if you want to use your own dataset</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>data_choice <span class="ot">&lt;-</span> <span class="st">"nrc"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="what-is-topic-modeling-and-why-do-we-use-it" class="level3">
+<h3 class="anchored" data-anchor-id="what-is-topic-modeling-and-why-do-we-use-it">What is topic modeling and why do we use it?</h3>
 <p>Topic modeling is an unsupervised machine learning method used to reveal hidden topics in text data. We will use a set of newsletter articles about …</p>
+</section>
 </section>
 <section id="pre-processing" class="level2">
 <h2 class="anchored" data-anchor-id="pre-processing">Pre-processing</h2>
-<p>For the topic model, we will need a set of PDF files with texts in English that are OCR-ed.&nbsp;Scanned documents and some PDF exports are not readable and need to be pre-processed following these steps:</p>
+<p>Pre-processing is an essential yet challenging part of quantitative data analysis, especially when dealing with unstructured data such as text coming from different media. Hence, it is very (and too) often the reason why one might give up before even starting to analyse their data. Moreover, trying to analyse poorly pre-processed data will very likely lead to unreliable and dissappointing results. Do not underestimate and follow carefully these steps.</p>
+<p>Text data can be obtained in many formats, but it is widely available in PDFs. Reports, journal articles, scans of physical publications, posters, are examples of types of text data that are openly available in PDF format. We will focus on this type of data and we will discuss other types of data coming from different media at the end of the workshop.</p>
+<p>We start with a set of PDFs of newsletter articles in Dutch. We are facing two challenges: the text is not-machine-readable and we need it to be in English.</p>
+<p>Let’s tackle the first issue. Scanned documents and some PDF documents with garbled text are not machine readable. Tools such as the Python application <a href="https://ocrmypdf.readthedocs.io/en/latest/">OCRmyPDF</a> can help with this issue by rasterizing and then adding an optical character recognition (OCR) text layer to the document.</p>
 <ol type="1">
-<li>Install <a href="https://ocrmypdf.readthedocs.io/en/latest/installation.html#">ORCmyPDF</a> for your operating system.</li>
-<li>Using the terminal, navigate to the directory with `cd /path/to/your/directory/` where your PDFs are located and run the following command. Note that the language of the document, in our case `nld`, needs to be specified. See other language codes [here](<a href="https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html" class="uri">https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html</a>).</li>
+<li>Install <a href="https://ocrmypdf.readthedocs.io/en/latest/installation.html#">OCRmyPDF</a> for your operating system.</li>
+<li>Using the terminal (macOS), navigate to the directory with <code>cd /path/to/your/directory/</code> where your PDFs are located and run the following command. Note that the language of the document, in our case <code>nld</code>, needs to be specified. See other language codes <a href="https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html">here</a>. Note that this requires all documents in the folder to be in the same language; if the documents are in different languages, then run the following command on documents separated into folders by language. This will not work with multi-lingual documents. The command will make the text in the existing PDFs machine readable.</li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-name</span> <span class="st">'*.pdf'</span> <span class="at">-exec</span> ocrmypdf <span class="at">--force-ocr</span> <span class="at">--language</span> nld <span class="at">--clean</span> <span class="st">'{}'</span> <span class="st">'{}'</span> <span class="dt">\;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This command will make the text in the PDFs machine readable. Note that this will not create new PDF files but replace the old ones.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-name</span> <span class="st">'*.pdf'</span> <span class="at">-exec</span> ocrmypdf <span class="at">--force-ocr</span> <span class="at">--language</span> nld <span class="at">--clean</span> <span class="st">'{}'</span> <span class="st">'{}'</span> <span class="dt">\;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ol start="3" type="1">
-<li>To translate the text from Dutch to English, we follow this pre-processing workflow:</li>
+<li>Extract text from PDF with the following script.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up Python for PDF text extraction</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">virtualenv_create</span>(<span class="at">envname =</span> <span class="st">"myenv"</span>, <span class="at">version =</span> <span class="st">"3.9:latest"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up Python for PDF text extraction</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">virtualenv_create</span>(<span class="at">envname =</span> <span class="st">"myenv"</span>, <span class="at">python =</span> <span class="fu">install_python</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>virtualenv: myenv</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">py_install</span>(<span class="st">"PyMuPDF == 1.21.0"</span>, <span class="at">envname =</span> <span class="st">"myenv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">py_install</span>(<span class="st">"PyMuPDF == 1.21.0"</span>, <span class="at">envname =</span> <span class="st">"myenv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Using virtual environment 'myenv' ...</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>+ /Users/claudiuforgaci/.virtualenvs/myenv/bin/python -m pip install --upgrade --no-user 'PyMuPDF == 1.21.0'</code></pre>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">use_virtualenv</span>(<span class="st">"myenv"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">source_python</span>(<span class="st">"extract-text-from-pdf.py"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>data_root <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"data/"</span>, data_choice)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Get PDF file paths</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>pdf_paths <span class="ot">&lt;-</span> <span class="fu">list.files</span>(data_root, <span class="at">full.names =</span> <span class="cn">TRUE</span>, <span class="at">pattern =</span> <span class="st">"*.pdf$"</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract text from PDFs</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>text <span class="ot">&lt;-</span> <span class="fu">convert_pdf</span>(pdf_paths) <span class="sc">|&gt;</span> <span class="fu">unlist</span>()</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co"># # TEMP: Missing texts</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="co"># pdf_paths2 &lt;- c(</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co">#   "Als de boer stopt, kan FrieslandCampina zijn fabriek uitbreiden - NRC",</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   "Belgische blokkades trekken ook Nederla..",</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co">#   "Bijna niemand wil het nog hebben over s..",</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co">#   "Boeren krijgen uitstel, maar Europese landbouwopgave blijft - NRC",</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">#   "Boeren- en klimaatdemonstranten niet on.."</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="co"># text2 &lt;- convert_pdf(paste0("data/nrc/", pdf_paths2, ".pdf")) |&gt; unlist()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">use_virtualenv</span>(<span class="st">"myenv"</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">source_python</span>(<span class="st">"extract-text-from-pdf.py"</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Get PDF file paths</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>pdf_paths <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">"data"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>, <span class="at">pattern =</span> <span class="st">"*.pdf$"</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract text from PDFs</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>text <span class="ot">&lt;-</span> <span class="fu">convert_pdf</span>(pdf_paths) <span class="sc">|&gt;</span> <span class="fu">unlist</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="4" type="1">
+<li>If the text is in Dutch (or another language), translate it to English using the <a href="https://www.deepl.com/pro-api?cta=header-pro-api">DeepL API</a> accessible in R via the `deeplr` package. Note that you need to create a developer account and the free plan is limited to 500,000 characters per month. This quota was sufficient for the translation of the 51 newsletter articles (331846 characters in total) used in this analysis. Before running the script below:
+<ul>
+<li>Set up a <a href="https://www.deepl.com/pro-api?cta=header-pro-api">DeepL API</a> developer account</li>
+<li>Copy the Authentication Key from the settings in your <a href="https://www.deepl.com/your-account/summary">account page</a></li>
+<li>Run <code>Sys.setenv(DEEPLR_AUTH_KEY = "PASTE_YOUR_AUTH_KEY_HERE")</code> , replacing <code>PASTE_YOUR_AUTH_KEY_HERE</code> with the Authentication Key you copied.</li>
+</ul></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create vector of file names to be used for saving the translated text</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>doc_names <span class="ot">&lt;-</span> <span class="fu">str_sub</span>(<span class="fu">list.files</span>(data_root, <span class="at">full.names =</span> <span class="cn">TRUE</span>, <span class="at">pattern =</span> <span class="st">"*.pdf$"</span>), <span class="dv">1</span>, <span class="sc">-</span><span class="dv">4</span>L) <span class="sc">|&gt;</span> <span class="fu">paste0</span>(<span class="st">".txt"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>doc_names <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_sub</span>(<span class="fu">list.files</span>(<span class="st">"data"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>, <span class="at">pattern =</span> <span class="st">"*.pdf$"</span>), <span class="dv">1</span>, <span class="sc">-</span><span class="dv">4</span>L) <span class="sc">|&gt;</span> <span class="fu">paste0</span>(<span class="st">".txt"</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># for (i in 1:length(text)) {</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   text_temp &lt;- deeplr::translate2(text[[i]], target_lang = "EN", source_lang = "NL",</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#                    auth_key = Sys.getenv("DEEPLR_AUTH_KEY")) </span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   writeLines(text_temp, doc_names[i])</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Translate the text from PDFs and write translation to files</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(text)) {</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  text_temp <span class="ot">&lt;-</span> deeplr<span class="sc">::</span><span class="fu">translate</span>(text[[i]], <span class="at">target_lang =</span> <span class="st">"EN"</span>, <span class="at">source_lang =</span> <span class="st">"NL"</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">auth_key =</span> <span class="fu">Sys.getenv</span>(<span class="st">"DEEPLR_AUTH_KEY"</span>))</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeLines</span>(text_temp, doc_names[i])</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># # TEMP translate extra files</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># for (i in 1:length(pdf_paths2)) {</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   text_temp &lt;- deeplr::translate(text2[[i]], target_lang = "EN", source_lang = "NL",</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#                    auth_key = Sys.getenv("DEEPLR_AUTH_KEY"))</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   writeLines(text_temp, paste0("data/", pdf_paths2, ".txt")[i])</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read texts in English from files</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>text_EN <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="at">length =</span> <span class="fu">length</span>(text)) </span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(text_EN)) {</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  text_EN[i] <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_file</span>(doc_names[i])</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">doc =</span> stringr<span class="sc">::</span><span class="fu">str_sub</span>(<span class="fu">list.files</span>(<span class="st">"data"</span>, <span class="at">pattern =</span> <span class="st">"*.txt"</span>), <span class="dv">1</span>, <span class="sc">-</span><span class="dv">4</span>L), </span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                     text_EN) <span class="sc">|&gt;</span> </span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">text_EN =</span> stringr<span class="sc">::</span><span class="fu">str_replace_all</span>(text_EN, <span class="st">"^[0-9]*$"</span>, <span class="st">""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># googleLanguageR::gl_auth("~/mint2324q3u-baf951fb3aa5.json")</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># text_EN_google &lt;- gl_translate(text, target = "en")$translatedText</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>doc_names2 <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"data/nrc/google-"</span>, <span class="fu">str_sub</span>(<span class="fu">list.files</span>(data_root, <span class="at">full.names =</span> <span class="cn">TRUE</span>, <span class="at">pattern =</span> <span class="st">"*.pdf$"</span>), <span class="dv">10</span>, <span class="sc">-</span><span class="dv">4</span>L), <span class="st">".txt"</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(text_EN_google)) {</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">writeLines</span>(text_EN_google[i], doc_names2[i])</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">nchar</span>(text_EN_google))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>At this step, we define a list of stop words that occur in high frequency across the entire set of documents and are not expected to add menaing to the topics.</p>
+</section>
+<section id="text-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="text-analysis">Text analysis</h2>
+<p>Create data frame with titles and texts.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>custom_stop_words <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">word =</span> <span class="fu">c</span>(<span class="st">"nrc"</span>, <span class="st">"www.nrc.nl"</span>, <span class="st">"newspaper"</span>, <span class="st">"nieuws"</span>, </span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">"news"</span>, <span class="st">"editorial"</span>, <span class="st">"credits"</span>,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">"netherlands"</span>, <span class="st">"https"</span>, <span class="st">"version"</span>,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">"reading"</span>, <span class="st">"list"</span>, <span class="st">"digital"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read texts in English from files</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(<span class="fu">list.files</span>(data_root, <span class="at">pattern =</span> <span class="st">"*.txt"</span>)) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Assuming text in English if translation is not found</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  text_EN <span class="ot">&lt;-</span> text</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span>{</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Assuming texts were translated and are available as text files</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  text_EN <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="at">length =</span> <span class="fu">length</span>(text)) </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(text_EN)) {</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    text_EN[i] <span class="ot">&lt;-</span> <span class="fu">read_file</span>(doc_names[i])</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">doc =</span> <span class="fu">str_sub</span>(<span class="fu">list.files</span>(data_root, <span class="at">pattern =</span> <span class="st">"*.txt"</span>), <span class="dv">1</span>, <span class="sc">-</span><span class="dv">4</span>L), text_EN) <span class="sc">|&gt;</span> </span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">text_EN =</span> <span class="fu">str_replace_all</span>(text_EN, <span class="st">"^[0-9]*$"</span>, <span class="st">""</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>At this step, we define a list of stop words that occur in high frequency across the entire set of documents and are not expected to add meaning to the topics.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>custom_stop_words <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">word =</span> <span class="fu">c</span>(<span class="st">"nrc"</span>, <span class="st">"www.nrc.nl"</span>, <span class="st">"newspaper"</span>, <span class="st">"nieuws"</span>, </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">"news"</span>, <span class="st">"editorial"</span>, <span class="st">"credits"</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">"netherlands"</span>, <span class="st">"https"</span>, <span class="st">"version"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                                         <span class="st">"reading"</span>, <span class="st">"list"</span>, <span class="st">"digital"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We split the entire corpus into words…</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>words <span class="ot">&lt;-</span> <span class="fu">unnest_tokens</span>(df, word, text_EN) <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(readr<span class="sc">::</span><span class="fu">parse_number</span>(word))) <span class="sc">|&gt;</span>  <span class="co"># Remove numbers</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(stop_words, <span class="at">by =</span> <span class="st">"word"</span>) <span class="sc">|&gt;</span>  <span class="co"># Remove English stop words</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(custom_stop_words, <span class="at">by =</span> <span class="st">"word"</span>) <span class="sc">|&gt;</span>  <span class="co"># Remove custom stop words</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">nchar</span>(word) <span class="sc">&gt;=</span> <span class="dv">4</span>)  <span class="co"># remove words of max. 3 characters</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>words <span class="ot">&lt;-</span> <span class="fu">unnest_tokens</span>(df, word, text_EN) <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(readr<span class="sc">::</span><span class="fu">parse_number</span>(word))) <span class="sc">|&gt;</span>  <span class="co"># Remove numbers</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(stop_words, <span class="at">by =</span> <span class="st">"word"</span>) <span class="sc">|&gt;</span>  <span class="co"># Remove English stop words</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anti_join</span>(custom_stop_words, <span class="at">by =</span> <span class="st">"word"</span>) <span class="sc">|&gt;</span>  <span class="co"># Remove custom stop words</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="fu">nchar</span>(word) <span class="sc">&gt;=</span> <span class="dv">4</span>)  <span class="co"># remove words of max. 3 characters</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: There was 1 warning in `filter()`.
 ℹ In argument: `is.na(readr::parse_number(word))`.
 Caused by warning:
-! 52088 parsing failures.
+! 52657 parsing failures.
 row col expected actual
   6  -- a number pm    
   7  -- a number a     
@@ -191,26 +330,45 @@ row col expected actual
 ... ... ........ ......
 See problems(...) for more details.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>  <span class="co"># count(word) |&gt; </span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># arrange(desc(n))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>…and construct a Document Term Matrix needed as input to the topic model.</p>
+<p>… and have a quick look at the most frequently used words. We can already guess what this set of newsletter articles are about: frequently used words such as “emissions”, “water”, and “biodiversity” indicate different areas of concern present in articles. Note that we have 5022 rows, each representing one distinct word. This is the vocabulary we will provide as input to the topic model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> words <span class="sc">|&gt;</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(doc, word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast_dtm</span>(doc, word, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>We run the model with a given number of clusters. Note that defining the number of clusters is a critical decision. It can be defined empirically (see, X, for instance) or empirically. As the former is computationally intensive and tends to result in a relatively high value, we choose the latter strategy, with a relatively low value that is easy to interpret.</p>
-<p>Note that the lower K is, the more interpretable it is, but too low might result in topics that are too general. The higher it is, the more accurate, but that comes at the cost of interpretability. So the choice of k is a matter of finding the balance between precision and interpretability.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine the value of k</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">5</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the LDA model</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>lda <span class="ot">&lt;-</span> <span class="fu">LDA</span>(dtm, <span class="at">k =</span> k, <span class="at">method=</span><span class="st">"Gibbs"</span>,</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">control =</span> <span class="fu">list</span>(<span class="at">seed =</span> <span class="dv">2023</span>, <span class="at">iter =</span> <span class="dv">500</span>, <span class="at">verbose =</span> <span class="dv">100</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>words <span class="sc">|&gt;</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word) <span class="sc">|&gt;</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>K = 5; V = 5022; M = 51
+<pre><code># A tibble: 5,300 × 2
+   word            n
+   &lt;chr&gt;       &lt;int&gt;
+ 1 nitrogen      401
+ 2 farmers       316
+ 3 nature        315
+ 4 time          136
+ 5 agriculture   131
+ 6 water         131
+ 7 emissions     107
+ 8 government     92
+ 9 farmer         80
+10 european       78
+# ℹ 5,290 more rows</code></pre>
+</div>
+</div>
+<p>Then we construct a Document Term Matrix needed as input to the topic model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> words <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">count</span>(doc, word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cast_dtm</span>(doc, word, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We run the model with a given number of clusters. Note that defining the number of clusters is a critical decision. It can be defined empirically or qualitatively. As the former is computationally intensive and tends to result in a relatively high value, we choose the latter strategy, with a relatively low value that is easy to interpret. In general, the lower k is, the more interpretable it is, but too low might result in topics that are too general. The higher it is, the more accurate, but that comes at the cost of interpretability. So the choice of k is a matter of finding the balance between precision and interpretability.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Determine the value of k</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the LDA model</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>lda <span class="ot">&lt;-</span> <span class="fu">LDA</span>(dtm, <span class="at">k =</span> k, <span class="at">method=</span><span class="st">"Gibbs"</span>,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">control =</span> <span class="fu">list</span>(<span class="at">seed =</span> <span class="dv">2023</span>, <span class="at">iter =</span> <span class="dv">500</span>, <span class="at">verbose =</span> <span class="dv">100</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>K = 5; V = 5300; M = 51
 Sampling 500 iterations!
 Iteration 100 ...
 Iteration 200 ...
@@ -219,80 +377,137 @@ Iteration 400 ...
 Iteration 500 ...
 Gibbs sampling completed!</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract beta and theta statistics from LDA model</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>beta <span class="ot">&lt;-</span> <span class="fu">posterior</span>(lda)<span class="sc">$</span>terms  <span class="co"># Distribution of topics over words</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fu">posterior</span>(lda)<span class="sc">$</span>topics  <span class="co"># Distribution of documents over topics</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Add pseudo-names to topics based on the top n words in each topic</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>n_words <span class="ot">&lt;-</span> <span class="dv">5</span>  <span class="co"># How many top words to include in the pseudo-name?</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>topic_names <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k) {</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  name <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">names</span>(<span class="fu">head</span>(<span class="fu">sort</span>(beta[i, ], <span class="at">decreasing =</span> <span class="cn">TRUE</span>), n_words)), <span class="at">collapse =</span> <span class="st">" "</span>)</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  topic_names <span class="ot">&lt;-</span> <span class="fu">c</span>(topic_names, name)</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>topic_names</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract beta and theta statistics from LDA model</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>beta <span class="ot">&lt;-</span> <span class="fu">posterior</span>(lda)<span class="sc">$</span>terms  <span class="co"># Distribution of topics over words</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>theta <span class="ot">&lt;-</span> <span class="fu">posterior</span>(lda)<span class="sc">$</span>topics  <span class="co"># Distribution of documents over topics</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Add pseudo-names to topics based on the top n words in each topic</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>n_words <span class="ot">&lt;-</span> <span class="dv">10</span>  <span class="co"># How many top words to include in the pseudo-name?</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>topic_names <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k) {</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  name <span class="ot">&lt;-</span> <span class="fu">paste</span>(<span class="fu">names</span>(<span class="fu">head</span>(<span class="fu">sort</span>(beta[i, ], <span class="at">decreasing =</span> <span class="cn">TRUE</span>), n_words)), <span class="at">collapse =</span> <span class="st">" "</span>)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  topic_names <span class="ot">&lt;-</span> <span class="fu">c</span>(topic_names, name)</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>topic_names</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "nitrogen nature emissions government permit"
-[2] "water level drought fields soil"            
-[3] "nature biodiversity land agriculture farm"  
-[4] "farmers agriculture time european measures" 
-[5] "nature rules dutch people photo"            </code></pre>
+<pre><code>[1] "nitrogen emissions nature farmers permit government policy province space percent"  
+[2] "water soil energy level time country groundwater storage start remkes"              
+[3] "service delivery dutch opinion hours protests share family minister archive"        
+[4] "nature biodiversity land aerius species restoration carbon natural piece ecological"
+[5] "farmers agriculture european agricultural time farmer food farming green week"      </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to approximate the distance between topics</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>svd_tsne <span class="ot">&lt;-</span> <span class="cf">function</span>(x) tsne<span class="sc">::</span><span class="fu">tsne</span>(<span class="fu">svd</span>(x)<span class="sc">$</span>u)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert DTM into JSON required by the LDAvis package</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>json <span class="ot">&lt;-</span> <span class="fu">createJSON</span>(</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">phi =</span> beta,</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">theta =</span> theta,</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">doc.length =</span> <span class="fu">rowSums</span>(<span class="fu">as.matrix</span>(dtm)),</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">vocab =</span> <span class="fu">colnames</span>(dtm),</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">term.frequency =</span> <span class="fu">colSums</span>(<span class="fu">as.matrix</span>(dtm)),</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">mds.method =</span> svd_tsne,</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot.opts =</span> <span class="fu">list</span>(<span class="at">xlab=</span><span class="st">""</span>, <span class="at">ylab=</span><span class="st">""</span>)</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>words_count <span class="ot">&lt;-</span> words <span class="sc">|&gt;</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word) <span class="sc">|&gt;</span> </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>wordcloud<span class="sc">::</span><span class="fu">wordcloud</span>(words<span class="sc">$</span>word, <span class="at">min.freq =</span> <span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="script_files/figure-html/wordcloud-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>keywords <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="at">length =</span> k)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k) {</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  keywords[i] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"- The words for Topic "</span>, i, <span class="st">" are: "</span>, topic_names[i], <span class="st">".</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">paste0</span>(<span class="st">"I have "</span>, k, <span class="st">" topics, each described by "</span>, n_words, </span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">" words. The keywords are as follows:</span><span class="sc">\n</span><span class="st">"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>I have 5 topics, each described by 10 words. The keywords are as follows:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(keywords, <span class="at">sep =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>- The words for Topic 1 are: nitrogen emissions nature farmers permit government policy province space percent.
+- The words for Topic 2 are: water soil energy level time country groundwater storage start remkes.
+- The words for Topic 3 are: service delivery dutch opinion hours protests share family minister archive.
+- The words for Topic 4 are: nature biodiversity land aerius species restoration carbon natural piece ecological.
+- The words for Topic 5 are: farmers agriculture european agricultural time farmer food farming green week.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"How would you name these topics? Use maximum two words to name the topics and provide a one-sentence description for each."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>How would you name these topics? Use maximum two words to name the topics and provide a one-sentence description for each.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # Submit request to ChatGPT</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># answer = create_chat_completion(</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   model = "gpt-3.5-turbo",</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   messages = list(</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co">#     list(</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       "role" = "user",</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       "content" = "I have 5 topics, each described by 10 words. The keywords are as follows:</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="co"># - The words for Topic 1 are: nitrogen emissions nature farmers permit government policy province space percent.</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="co"># - The words for Topic 2 are: water soil energy level time country groundwater storage start remkes.</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="co"># - The words for Topic 3 are: service delivery dutch opinion hours protests share family minister archive.</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="co"># - The words for Topic 4 are: nature biodiversity land aerius species restoration carbon natural piece ecological.</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="co"># - The words for Topic 5 are: farmers agriculture european agricultural time farmer food farming green week.</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="co"># How would you name these topics? Use maximum two words to name the topics and provide a one-sentence description for each."</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="co">#     )</span></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   )</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Display answer</span></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a><span class="co"># cat(answer$choices$message.content)</span></span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"1. Environmental Policy - Government regulations on nitrogen emissions and space allocation for farmers.</span><span class="sc">\n</span><span class="st">2. Water Management - Strategies for conserving soil, energy, and groundwater resources over time.</span><span class="sc">\n</span><span class="st">3. Public Services - Dutch minister's response to protests on service delivery hours.</span><span class="sc">\n</span><span class="st">4. Biodiversity Conservation - Efforts to restore natural habitats and protect diverse species.</span><span class="sc">\n</span><span class="st">5. Sustainable Agriculture - European farmers' commitment to green practices for food production."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to approximate the distance between topics</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>svd_tsne <span class="ot">&lt;-</span> <span class="cf">function</span>(x) tsne<span class="sc">::</span><span class="fu">tsne</span>(<span class="fu">svd</span>(x)<span class="sc">$</span>u)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert DTM into JSON required by the LDAvis package</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>json <span class="ot">&lt;-</span> <span class="fu">createJSON</span>(</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">phi =</span> beta,</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">theta =</span> theta,</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">doc.length =</span> <span class="fu">rowSums</span>(<span class="fu">as.matrix</span>(dtm)),</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">vocab =</span> <span class="fu">colnames</span>(dtm),</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">term.frequency =</span> <span class="fu">colSums</span>(<span class="fu">as.matrix</span>(dtm)),</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">mds.method =</span> svd_tsne,</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot.opts =</span> <span class="fu">list</span>(<span class="at">xlab=</span><span class="st">""</span>, <span class="at">ylab=</span><span class="st">""</span>)</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>sigma summary: Min. : 33554432 |1st Qu. : 33554432 |Median : 33554432 |Mean : 33554432 |3rd Qu. : 33554432 |Max. : 33554432 |</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #100 error is: 15.3258930899039</code></pre>
+<pre><code>Epoch: Iteration #100 error is: 13.4847510222926</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #200 error is: 0.301228337271479</code></pre>
+<pre><code>Epoch: Iteration #200 error is: 0.196765958177571</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #300 error is: 0.162740064036341</code></pre>
+<pre><code>Epoch: Iteration #300 error is: 0.13985096068754</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #400 error is: 0.128401154158209</code></pre>
+<pre><code>Epoch: Iteration #400 error is: 0.112521212344754</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #500 error is: 0.123524558639067</code></pre>
+<pre><code>Epoch: Iteration #500 error is: 0.110661474783065</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #600 error is: 0.12144887113438</code></pre>
+<pre><code>Epoch: Iteration #600 error is: 0.110484022907413</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #700 error is: 0.116474565988003</code></pre>
+<pre><code>Epoch: Iteration #700 error is: 0.110466404776234</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #800 error is: 0.111154155235899</code></pre>
+<pre><code>Epoch: Iteration #800 error is: 0.110464844335903</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #900 error is: 0.110513139192886</code></pre>
+<pre><code>Epoch: Iteration #900 error is: 0.110464671194031</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #1000 error is: 0.11046913837609</code></pre>
+<pre><code>Epoch: Iteration #1000 error is: 0.110464616180392</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualise topics model with LDAvis</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>LDAvis<span class="sc">::</span><span class="fu">serVis</span>(json)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required namespace: servr</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualise topics model with LDAvis</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>LDAvis<span class="sc">::</span><span class="fu">serVis</span>(json)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 

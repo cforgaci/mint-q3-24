@@ -1,24 +1,50 @@
 ---
-title: "Topic modeling with R"
+title: "Mining the Dutch news about farming communities"
+subtitle: "A Topic Modeling Approach using R"
+author: "Claudiu Forgaci"
+date: "20 March 2024"
 format: html
+toc: true
 ---
 
-For this analysis, we will need to load the following R packages.
+::: callout-note
+In this workshop, we will work in a computational notebook, an environment that combines narrative, executable code and output in one place. The document you are reading is a Quarto document that combines Markdown, a markup language with a simple syntax for text formatting, with code chunks written in the R programming language. If you are reading the source document `script.qmd` and want to see a rendered version of it, click on the Render button above this window.
+:::
+
+## Setup
+
+### Software
+
+1.  During the workshop, we work in [a cloud instance of RStudio](http://rstudio-server-edu.bk.tudelft.nl:8787/) accessible through your web browser, so no installation is required. After the workshop, you will need to install [R, RStudio Desktop](https://posit.co/download/rstudio-desktop/) and [Python](https://www.python.org/downloads/) for your operating system.
+
+2.  Open RStudio and create a new project from `File > New Project... > Version Control > Git` with the URL `https://github.com/cforgaci/mint2324Q3U.git` and project directory name `mint2324Q3U`. Browse to a location of your choice on your computer and click on `Create Project`. This will create a project directory populated with the data scripts used in the workshop.
+
+3.  Open `script.qmd`. This will bring you to the computational notebook from where this document was rendered. Continue reading there.
+
+4.  For our analysis, we will need to load a number of R packages that extend the out-of-the-box functionality of R. Run the code chunk below by pressing on the green arrow in its upper right corner. If this is the first time you run the script, it will take a couple of minutes until all packages are installed.
 
 ```{r setup, message=FALSE}
-library(tidyverse)    # Data manipulation and visualisation
-library(tidytext)     # Text manipulation
-library(topicmodels)  # Topic modeling
-library(LDAvis)       # Interactive visualisation of LDA models
-library(reticulate)   # R interface with Python
-library(wordcloud)
-require(reshape2)
-require(servr)
+# Install packages
+if (!"renv" %in% installed.packages()) install.packages("renv")
+renv::restore()
+
+# Load packages
+library(tidyverse)        # Data manipulation and visualisation
+library(reticulate)       # R interface with Python
+library(tidytext)         # Text manipulation
+library(topicmodels)      # Topic modeling
+library(LDAvis)           # Interactive visualisation of LDA models
+require(servr)            # LDAvis dependency
+library(wordcloud)        # Generate word clouds
+require(reshape2)         # wordcloud dependency
+library(openai)           # Access ChatGPT from R
+library(googleLanguageR)  # Text translation with Google Translation API
+library(deeplr)           # Text translation with DeepL API
 ```
 
 ## Introduction
 
-In this workshop, we will use topic modeling to <!--TODO add research objective -->. In the context of the Q3 studio of the MSc Urbanism, this is meant to
+In this workshop, we will use topic modeling to reveal key topics in the Dutch news about farmer communities.
 
 ### Motivation
 
@@ -26,9 +52,14 @@ As any quantitative method, topic modeling depends on data. The more, the better
 
 ### The dataset
 
-We will do this together on a given dataset,
+We will do this together on a given dataset: 51 PDF documents containing news items mostly from the period 2022-2024 and from the Dutch NRC newsletter. After that, you will run the analysis in this document on a dataset of your choice. Run the following code chunk with the default value.
 
-After that, you will do the same on a dataset of your choice.
+```{r}
+# What data will you work with? Use one of the following two values:
+# - "nrc" if you want to use the default dataset
+# - "mydata" if you want to use your own dataset
+data_choice <- "nrc"
+```
 
 ### What is topic modeling and why do we use it?
 
@@ -53,18 +84,30 @@ find . -name '*.pdf' -exec ocrmypdf --force-ocr --language nld --clean '{}' '{}'
 
 3.  Extract text from PDF with the following script.
 
-```{r extract-text-from-pdf, message=FALSE}
+```{r extract-text-from-pdf, message=FALSE, eval=FALSE}
 # Set up Python for PDF text extraction
 virtualenv_create(envname = "myenv", python = install_python())
 py_install("PyMuPDF == 1.21.0", envname = "myenv")
 use_virtualenv("myenv")
 source_python("extract-text-from-pdf.py")
 
+data_root <- paste0("data/", data_choice)
+
 # Get PDF file paths
-pdf_paths <- list.files("data", full.names = TRUE, pattern = "*.pdf$")
+pdf_paths <- list.files(data_root, full.names = TRUE, pattern = "*.pdf$")
 
 # Extract text from PDFs
 text <- convert_pdf(pdf_paths) |> unlist()
+
+# # TEMP: Missing texts
+# pdf_paths2 <- c(
+#   "Als de boer stopt, kan FrieslandCampina zijn fabriek uitbreiden - NRC",
+#   "Belgische blokkades trekken ook Nederla..",
+#   "Bijna niemand wil het nog hebben over s..",
+#   "Boeren krijgen uitstel, maar Europese landbouwopgave blijft - NRC",
+#   "Boeren- en klimaatdemonstranten niet on.."
+# )
+# text2 <- convert_pdf(paste0("data/nrc/", pdf_paths2, ".pdf")) |> unlist()
 ```
 
 4.  If the text is in Dutch (or another language), translate it to English using the [DeepL API](https://www.deepl.com/pro-api?cta=header-pro-api) accessible in R via the \`deeplr\` package. Note that you need to create a developer account and the free plan is limited to 500,000 characters per month. This quota was sufficient for the translation of the 51 newsletter articles (`r sum(nchar(text))` characters in total) used in this analysis. Before running the script below:
@@ -74,25 +117,45 @@ text <- convert_pdf(pdf_paths) |> unlist()
 
 ```{r translate-filenames}
 # Create vector of file names to be used for saving the translated text
-doc_names <- str_sub(list.files("data", full.names = TRUE, pattern = "*.pdf$"), 1, -4L) |> paste0(".txt")
+doc_names <- str_sub(list.files(data_root, full.names = TRUE, pattern = "*.pdf$"), 1, -4L) |> paste0(".txt")
 ```
 
 ```{r translate, eval=FALSE}
 # Translate the text from PDFs and write translation to files
 for (i in 1:length(text)) {
-  text_temp <- deeplr::translate2(text[[i]], target_lang = "EN", source_lang = "NL",
+  text_temp <- deeplr::translate(text[[i]], target_lang = "EN", source_lang = "NL",
                    auth_key = Sys.getenv("DEEPLR_AUTH_KEY"))
   writeLines(text_temp, doc_names[i])
 }
+
+# # TEMP translate extra files
+# for (i in 1:length(pdf_paths2)) {
+#   text_temp <- deeplr::translate(text2[[i]], target_lang = "EN", source_lang = "NL",
+#                    auth_key = Sys.getenv("DEEPLR_AUTH_KEY"))
+#   writeLines(text_temp, paste0("data/", pdf_paths2, ".txt")[i])
+# }
 ```
 
-## Analysis
+```{r eval=FALSE}
+# googleLanguageR::gl_auth("~/mint2324q3u-baf951fb3aa5.json")
+# text_EN_google <- gl_translate(text, target = "en")$translatedText
+
+doc_names2 <- paste0("data/nrc/google-", str_sub(list.files(data_root, full.names = TRUE, pattern = "*.pdf$"), 10, -4L), ".txt")
+
+for (i in 1:length(text_EN_google)) {
+  writeLines(text_EN_google[i], doc_names2[i])
+}
+
+sum(nchar(text_EN_google))
+```
+
+## Text analysis
 
 Create data frame with titles and texts.
 
-```{r}
+```{r df}
 # Read texts in English from files
-if (length(list.files("data", pattern = "*.txt")) == 0) {
+if (length(list.files(data_root, pattern = "*.txt")) == 0) {
   # Assuming text in English if translation is not found
   text_EN <- text
 } else{
@@ -103,13 +166,13 @@ if (length(list.files("data", pattern = "*.txt")) == 0) {
   }
 }
 
-df <- tibble(doc = str_sub(list.files("data", pattern = "*.txt"), 1, -4L), text_EN) |> 
+df <- tibble(doc = str_sub(list.files(data_root, pattern = "*.txt"), 1, -4L), text_EN) |> 
   mutate(text_EN = str_replace_all(text_EN, "^[0-9]*$", ""))
 ```
 
 At this step, we define a list of stop words that occur in high frequency across the entire set of documents and are not expected to add meaning to the topics.
 
-```{r}
+```{r swcustom}
 custom_stop_words <- data.frame(word = c("nrc", "www.nrc.nl", "newspaper", "nieuws", 
                                          "news", "editorial", "credits",
                                          "netherlands", "https", "version",
@@ -118,7 +181,7 @@ custom_stop_words <- data.frame(word = c("nrc", "www.nrc.nl", "newspaper", "nieu
 
 We split the entire corpus into words...
 
-```{r}
+```{r tokens, warning=FALSE}
 words <- unnest_tokens(df, word, text_EN) |>
   filter(is.na(readr::parse_number(word))) |>  # Remove numbers
   anti_join(stop_words, by = "word") |>  # Remove English stop words
@@ -128,7 +191,7 @@ words <- unnest_tokens(df, word, text_EN) |>
 
 ... and have a quick look at the most frequently used words. We can already guess what this set of newsletter articles are about: frequently used words such as "emissions", "water", and "biodiversity" indicate different areas of concern present in articles. Note that we have 5022 rows, each representing one distinct word. This is the vocabulary we will provide as input to the topic model.
 
-```{r}
+```{r tokens-rank}
 words |> 
   count(word) |>
   arrange(desc(n))
@@ -136,7 +199,7 @@ words |>
 
 Then we construct a Document Term Matrix needed as input to the topic model.
 
-```{r}
+```{r dtm}
 dtm <- words |>
     count(doc, word, sort = TRUE) |>
     cast_dtm(doc, word, n)
@@ -144,13 +207,13 @@ dtm <- words |>
 
 We run the model with a given number of clusters. Note that defining the number of clusters is a critical decision. It can be defined empirically or qualitatively. As the former is computationally intensive and tends to result in a relatively high value, we choose the latter strategy, with a relatively low value that is easy to interpret. In general, the lower k is, the more interpretable it is, but too low might result in topics that are too general. The higher it is, the more accurate, but that comes at the cost of interpretability. So the choice of k is a matter of finding the balance between precision and interpretability.
 
-```{r}
+```{r lda}
 # Determine the value of k
 k <- 5
 
 # Fit the LDA model
 lda <- LDA(dtm, k = k, method="Gibbs",
-           control = list(seed = 2023, iter = 500, verbose = 100))
+           control = list(seed = 2023, iter = 500))
 
 # Extract beta and theta statistics from LDA model
 beta <- posterior(lda)$terms  # Distribution of topics over words
@@ -168,7 +231,7 @@ for (i in 1:k) {
 topic_names
 ```
 
-```{r warning=FALSE}
+```{r wordcloud, warning=FALSE}
 words_count <- words |> 
   count(word) |> 
   arrange(desc(n))
@@ -176,7 +239,43 @@ words_count <- words |>
 wordcloud::wordcloud(words$word, min.freq = 50)
 ```
 
-```{r}
+```{r prompt}
+keywords <- vector(length = k)
+for (i in 1:k) {
+  keywords[i] <- paste0("- The words for Topic ", i, " are: ", topic_names[i], ".\n")
+}
+
+cat(paste0("I have ", k, " topics, each described by ", n_words, 
+             " words. The keywords are as follows:\n"))
+cat(keywords, sep = "")
+cat("How would you name these topics? Use maximum two words to name the topics and provide a one-sentence description for each.")
+
+```
+
+```{r answer, eval=FALSE}
+# # Submit request to ChatGPT
+# answer = create_chat_completion(
+#   model = "gpt-3.5-turbo",
+#   messages = list(
+#     list(
+#       "role" = "user",
+#       "content" = "I have 5 topics, each described by 10 words. The keywords are as follows:
+# - The words for Topic 1 are: nitrogen emissions nature farmers permit government policy province space percent.
+# - The words for Topic 2 are: water soil energy level time country groundwater storage start remkes.
+# - The words for Topic 3 are: service delivery dutch opinion hours protests share family minister archive.
+# - The words for Topic 4 are: nature biodiversity land aerius species restoration carbon natural piece ecological.
+# - The words for Topic 5 are: farmers agriculture european agricultural time farmer food farming green week.
+# How would you name these topics? Use maximum two words to name the topics and provide a one-sentence description for each."
+#     )
+#   )
+# )
+
+# Display answer
+# cat(answer$choices$message.content)
+cat("1. Environmental Policy - Government regulations on nitrogen emissions and space allocation for farmers.\n2. Water Management - Strategies for conserving soil, energy, and groundwater resources over time.\n3. Public Services - Dutch minister's response to protests on service delivery hours.\n4. Biodiversity Conservation - Efforts to restore natural habitats and protect diverse species.\n5. Sustainable Agriculture - European farmers' commitment to green practices for food production.")
+```
+
+```{r ldavis}
 # Function to approximate the distance between topics
 svd_tsne <- function(x) tsne::tsne(svd(x)$u)
 
