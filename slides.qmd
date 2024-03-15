@@ -1,6 +1,6 @@
 ---
 title: "Farming communities<br>in Dutch media"
-subtitle: "A Topic Modeling Approach using R"
+subtitle: "Web Scraping & Topic Modeling using R"
 date: "20 March 2024"
 author:
   - "Claudiu Forgaci"
