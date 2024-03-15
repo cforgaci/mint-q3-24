@@ -1,5 +1,5 @@
 ---
-title: "Mining Dutch<br>media about farming communities"
+title: "Farming communities<br>in Dutch media"
 subtitle: "A Topic Modeling Approach using R"
 date: "20 March 2024"
 author: "Claudiu Forgaci"
@@ -13,8 +13,8 @@ footer: "Topic Modeling with R"
 
 ## Workshop outline {.smaller}
 
-1. Tutorial: Finding topics in Dutch news
-2. Tutorial: How to get your own data from social media? (Shuyu Zhang)
+1. Tutorial: How to get your own data from social media with Web Scraper? (Shuyu Zhang)
+2. Tutorial: Finding topics in Dutch news
 3. Exercise: Topic modeling with your own data
 
 # Part 1: Finding topics in Dutch news {.center background-color="#00A6D6"}

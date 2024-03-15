@@ -69,6 +69,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="script_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="script_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="script_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>
+.cell-output-stdout code {
+  word-break: break-wor !important;
+  white-space: pre-wrap !important;
+}
+</style>
 
 
 </head>
@@ -93,6 +99,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#pre-processing" id="toc-pre-processing" class="nav-link" data-scroll-target="#pre-processing">Pre-processing</a></li>
   <li><a href="#text-analysis" id="toc-text-analysis" class="nav-link" data-scroll-target="#text-analysis">Text analysis</a></li>
+  <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation">Interpretation</a></li>
   </ul>
 </nav>
 </div>
@@ -159,7 +166,7 @@ Note
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install packages</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="st">"renv"</span> <span class="sc">%in%</span> <span class="fu">installed.packages</span>()) <span class="fu">install.packages</span>(<span class="st">"renv"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>(renv<span class="sc">::</span><span class="fu">restore</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">restore</span>(<span class="at">prompt =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>- The library is already synchronized with the lockfile.</code></pre>
 </div>
@@ -392,6 +399,10 @@ Note
 </div>
 </div>
 </div>
+</section>
+<section id="interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="interpretation">Interpretation</h2>
+<p>In important final step of topic modeling is the interpretation of the results. This is a step that requires you, the person conducting the analysis, to qualitatively describe the topics. This boils down to naming the topics and describing them. The pseudo-naming we used so far is an automated way to give an idea of what each topic is about, but we might want to further abstract those to overarching topics. This can be straightforward for some topics and challenging for others.Large Language Models like ChatGPT are very suitable for such a task. We will use the free version (3.5) of ChatGPTY with a prompt generated below using the parameters set in this document. Run the code below and copy/paste its output in a new chat in ChatGPT.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>keywords <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="at">length =</span> k)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>k) {</span>
@@ -399,94 +410,84 @@ Note
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="fu">paste0</span>(<span class="st">"I have "</span>, k, <span class="st">" topics, each described by "</span>, n_words, </span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">" words. The keywords are as follows:</span><span class="sc">\n</span><span class="st">"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">" words. The keywords are as follows:</span><span class="sc">\n</span><span class="st">"</span>),</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    keywords, <span class="st">"How would you name these topics? Use maximum two words to name the topics and provide a one-sentence description for each."</span>,</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">sep =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>I have 5 topics, each described by 5 words. The keywords are as follows:</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(keywords, <span class="at">sep =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>- The words for Topic 1 are: nitrogen emissions nature farmers permit.
+<pre><code>I have 5 topics, each described by 5 words. The keywords are as follows:
+- The words for Topic 1 are: nitrogen emissions nature farmers permit.
 - The words for Topic 2 are: water soil energy level time.
 - The words for Topic 3 are: service delivery dutch opinion hours.
 - The words for Topic 4 are: nature biodiversity land aerius species.
-- The words for Topic 5 are: farmers agriculture european agricultural time.</code></pre>
+- The words for Topic 5 are: farmers agriculture european agricultural time.
+How would you name these topics? Use maximum two words to name the topics and provide a one-sentence description for each.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"How would you name these topics? Use maximum two words to name the topics and provide a one-sentence description for each."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Run the next code chunk to see a variant of ChatGPT’s answer to our prompt. This will be slightly different from the answer you get from ChatGPT, but it is unlikely that it is too different.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The code below (not run) was used to access the ChatGPT API from R, which is a paid service with an account on the <a href="https://platform.openai.com/">OpenAI Platform</a>. Using <a href="https://chat.openai.com/">the web version of ChatGPT 3.5</a> is free and sufficient for this task.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # Submit request to ChatGPT</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># answer = create_chat_completion(</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   model = "gpt-3.5-turbo",</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   messages = list(</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="co">#     list(</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       "role" = "user",</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       "content" = "I have 5 topics, each described by 5 words. The keywords are as follows:</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co"># - The words for Topic 1 are: nitrogen emissions nature farmers permit.</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co"># - The words for Topic 2 are: water soil energy level time.</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co"># - The words for Topic 3 are: service delivery dutch opinion hours.</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="co"># - The words for Topic 4 are: nature biodiversity land aerius species.</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="co"># - The words for Topic 5 are: farmers agriculture european agricultural time.</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="co"># How would you name these topics? Use maximum two words to name the topics and provide a one-sentence description for each."</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="co">#     )</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   )</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Display answer</span></span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="co"># cat(answer$choices$message.content)</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"1. Environmental Impact: Nitrogen emissions, nature, farmers, permit - Discussing the environmental impact of nitrogen emissions on nature and the role of farmers in obtaining permits.</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a><span class="st">2. Resource Management: Water, soil, energy level, time - Exploring strategies for managing resources efficiently, including water, soil, and energy, within the constraints of time.</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="st">3. Public Services: Service delivery, Dutch opinion, hours - Analyzing public service delivery based on Dutch opinion and the impact of working hours.</span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a><span class="st">4. Biodiversity Conservation: Nature, biodiversity, land Aerius, species - Addressing the conservation of biodiversity in nature, land Aerius, and various species.</span></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a><span class="st">5. European Agriculture: Farmers, agriculture, European, agricultural time - Evaluating the role of farmers in European agriculture and the necessary time investment for sustainable practices."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>How would you name these topics? Use maximum two words to name the topics and provide a one-sentence description for each.</code></pre>
+<pre><code>1. Environmental Impact: Nitrogen emissions, nature, farmers, permit - Discussing the environmental impact of nitrogen emissions on nature and the role of farmers in obtaining permits.
+2. Resource Management: Water, soil, energy level, time - Exploring strategies for managing resources efficiently, including water, soil, and energy, within the constraints of time.
+3. Public Services: Service delivery, Dutch opinion, hours - Analyzing public service delivery based on Dutch opinion and the impact of working hours.
+4. Biodiversity Conservation: Nature, biodiversity, land Aerius, species - Addressing the conservation of biodiversity in nature, land Aerius, and various species.
+5. European Agriculture: Farmers, agriculture, European, agricultural time - Evaluating the role of farmers in European agriculture and the necessary time investment for sustainable practices.</code></pre>
 </div>
 </div>
+<p>LDAvis is a package that can generate interactive visualisation of the topics in a topic model. Running this code chunk will open a browser window that allows you to explore topic-level top words as well as the relevance of individual words across topics.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # Submit request to ChatGPT</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="co"># answer = create_chat_completion(</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   model = "gpt-3.5-turbo",</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   messages = list(</span></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co">#     list(</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       "role" = "user",</span></span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       "content" = "I have 5 topics, each described by 10 words. The keywords are as follows:</span></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="co"># - The words for Topic 1 are: nitrogen emissions nature farmers permit government policy province space percent.</span></span>
-<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co"># - The words for Topic 2 are: water soil energy level time country groundwater storage start remkes.</span></span>
-<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co"># - The words for Topic 3 are: service delivery dutch opinion hours protests share family minister archive.</span></span>
-<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co"># - The words for Topic 4 are: nature biodiversity land aerius species restoration carbon natural piece ecological.</span></span>
-<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="co"># - The words for Topic 5 are: farmers agriculture european agricultural time farmer food farming green week.</span></span>
-<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="co"># How would you name these topics? Use maximum two words to name the topics and provide a one-sentence description for each."</span></span>
-<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="co">#     )</span></span>
-<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="co">#   )</span></span>
-<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
-<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Display answer</span></span>
-<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="co"># cat(answer$choices$message.content)</span></span>
-<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"1. Environmental Policy - Government regulations on nitrogen emissions and space allocation for farmers.</span><span class="sc">\n</span><span class="st">2. Water Management - Strategies for conserving soil, energy, and groundwater resources over time.</span><span class="sc">\n</span><span class="st">3. Public Services - Dutch minister's response to protests on service delivery hours.</span><span class="sc">\n</span><span class="st">4. Biodiversity Conservation - Efforts to restore natural habitats and protect diverse species.</span><span class="sc">\n</span><span class="st">5. Sustainable Agriculture - European farmers' commitment to green practices for food production."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to approximate the distance between topics</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>svd_tsne <span class="ot">&lt;-</span> <span class="cf">function</span>(x) tsne<span class="sc">::</span><span class="fu">tsne</span>(<span class="fu">svd</span>(x)<span class="sc">$</span>u)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert DTM into JSON required by the LDAvis package</span></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>json <span class="ot">&lt;-</span> <span class="fu">createJSON</span>(</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">phi =</span> beta,</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">theta =</span> theta,</span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">doc.length =</span> <span class="fu">rowSums</span>(<span class="fu">as.matrix</span>(dtm)),</span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">vocab =</span> <span class="fu">colnames</span>(dtm),</span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">term.frequency =</span> <span class="fu">colSums</span>(<span class="fu">as.matrix</span>(dtm)),</span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">mds.method =</span> svd_tsne,</span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot.opts =</span> <span class="fu">list</span>(<span class="at">xlab=</span><span class="st">""</span>, <span class="at">ylab=</span><span class="st">""</span>)</span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>sigma summary: Min. : 33554432 |1st Qu. : 33554432 |Median : 33554432 |Mean : 33554432 |3rd Qu. : 33554432 |Max. : 33554432 |</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #100 error is: 13.4847510222926</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #200 error is: 0.196765958177571</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #300 error is: 0.13985096068754</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #400 error is: 0.112521212344754</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #500 error is: 0.110661474783065</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #600 error is: 0.110484022907413</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #700 error is: 0.110466404776234</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #800 error is: 0.110464844335903</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #900 error is: 0.110464671194031</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Epoch: Iteration #1000 error is: 0.110464616180392</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualise topics model with LDAvis</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>LDAvis<span class="sc">::</span><span class="fu">serVis</span>(json)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to approximate the distance between topics</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>svd_tsne <span class="ot">&lt;-</span> <span class="cf">function</span>(x) tsne<span class="sc">::</span><span class="fu">tsne</span>(<span class="fu">svd</span>(x)<span class="sc">$</span>u)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert DTM into JSON required by the LDAvis package</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>json <span class="ot">&lt;-</span> <span class="fu">createJSON</span>(</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">phi =</span> beta,</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">theta =</span> theta,</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">doc.length =</span> <span class="fu">rowSums</span>(<span class="fu">as.matrix</span>(dtm)),</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">vocab =</span> <span class="fu">colnames</span>(dtm),</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">term.frequency =</span> <span class="fu">colSums</span>(<span class="fu">as.matrix</span>(dtm)),</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">mds.method =</span> svd_tsne,</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot.opts =</span> <span class="fu">list</span>(<span class="at">xlab=</span><span class="st">""</span>, <span class="at">ylab=</span><span class="st">""</span>)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualise topics model with LDAvis</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>LDAvis<span class="sc">::</span><span class="fu">serVis</span>(json)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 
