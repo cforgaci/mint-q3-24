@@ -17,7 +17,7 @@ footer: "Topic Modeling with R"
 
 1. Tutorial: Scraping data from social media (Shuyu) - 30 min
 2. Tutorial: Finding topics in Dutch news (Claudiu) - 1 hour
-3. Exercise: Topic modeling with your own data - 1 hour
+3. Exercises: Visualising scraped data & topic modeling with your own data - 1 hour
 
 # Part 1: Scraping data from social media {.center background-color="#00A6D6"}
 
@@ -66,7 +66,7 @@ Topic modeling using LDA as a way to reveal latent topics inunstructured text da
 - documents are a mixture of topics
 - topics are a mixture of words
 
-# Go to [edu.nl/ph3a6](edu.nl/ph3a6) {background-color="#00A6D6"}
+# Go to [edu.nl/ph3a6](https://edu.nl/ph3a6) {background-color="#00A6D6"}
 
 And log in to RStudio Server with:  
 
