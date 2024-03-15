@@ -117,7 +117,7 @@ div.csl-indent {
   <li><a href="#the-dataset" id="toc-the-dataset" class="nav-link" data-scroll-target="#the-dataset">The dataset</a></li>
   <li><a href="#topic-modeling-what-is-it-and-why-do-we-use-it" id="toc-topic-modeling-what-is-it-and-why-do-we-use-it" class="nav-link" data-scroll-target="#topic-modeling-what-is-it-and-why-do-we-use-it">Topic modeling: what is it and why do we use it?</a></li>
   </ul></li>
-  <li><a href="#pre-processing" id="toc-pre-processing" class="nav-link" data-scroll-target="#pre-processing">Pre-processing</a></li>
+  <li><a href="#prepare-your-data" id="toc-prepare-your-data" class="nav-link" data-scroll-target="#prepare-your-data">Prepare your data</a></li>
   <li><a href="#text-analysis" id="toc-text-analysis" class="nav-link" data-scroll-target="#text-analysis">Text analysis</a></li>
   <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation">Interpretation</a></li>
   <li><a href="#now-its-your-turn" id="toc-now-its-your-turn" class="nav-link" data-scroll-target="#now-its-your-turn">Now it’s your turn!</a>
@@ -239,11 +239,13 @@ Note
 <p>We will work with one of the most popular topic models called latent Dirichlet allocation (LDA), a probabilistic model in which every document is a distribution over a given number of topics and every topic is a distribution over the vocabulary, i.e., all distinct words used in all documents. The details of LDA are outside the scope of this workshop; if you want to know more, you can read more in <span class="citation" data-cites="blei2012">(<a href="#ref-blei2012" role="doc-biblioref">Blei 2012</a>)</span>.</p>
 </section>
 </section>
-<section id="pre-processing" class="level2">
-<h2 class="anchored" data-anchor-id="pre-processing">Pre-processing</h2>
+<section id="prepare-your-data" class="level2">
+<h2 class="anchored" data-anchor-id="prepare-your-data">Prepare your data</h2>
 <p>Before fitting a topic model, we need to make sure that our data is in the right form. Pre-processing in general is an essential yet challenging part of quantitative data analysis, especially when dealing with unstructured data such as text coming from different media. Hence, it is very (and too) often the reason why one might give up before even starting to analyse their data. Moreover, trying to analyse poorly pre-processed data will very likely lead to unreliable and disappointing results. Do not underestimate and follow carefully these steps.</p>
 <p>Text data can be obtained in many formats, but it is widely available in PDFs. Reports, journal articles, scans of physical publications, posters, are examples of types of text data that are openly available in PDF format. We will focus on this type of data and we will discuss other types of data coming from different media in other parts of the workshop.</p>
 <p>We start with a set of PDFs of newsletter articles in Dutch. We are facing two challenges: the text is not-machine-readable and we need it to be in English.</p>
+<section id="make-pdfs-machine-readable" class="level4">
+<h4 class="anchored" data-anchor-id="make-pdfs-machine-readable">Make PDFs machine-readable</h4>
 <p>Let’s tackle the first issue. Scanned documents and some PDF documents with garbled text are not machine readable. Tools such as the Python application <a href="https://ocrmypdf.readthedocs.io/en/latest/">OCRmyPDF</a> can help with this issue by rasterizing and then adding an optical character recognition (OCR) text layer to the document.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -263,6 +265,9 @@ Note
 <li>Using the terminal, navigate to the directory with <code>cd /path/to/your/directory/</code> where your PDFs are located and run the following command. Note that the language of the document, in our case <code>nld</code>, needs to be specified. See other language codes <a href="https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html">here</a>. Note that this requires all documents in the folder to be in the same language; if the documents are in different languages, then run the following command on documents separated into folders by language. This will not work with multi-lingual documents. The command will make the text in the existing PDFs machine readable.</li>
 </ol>
 <div class="sourceCode" id="cb5"><pre class="sourceCode sh code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-name</span> <span class="st">'*.pdf'</span> <span class="at">-exec</span> ocrmypdf <span class="at">--force-ocr</span> <span class="at">--language</span> nld <span class="at">--clean</span> <span class="st">'{}'</span> <span class="st">'{}'</span> <span class="dt">\;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="extract-text-from-pdfs" class="level4">
+<h4 class="anchored" data-anchor-id="extract-text-from-pdfs">Extract text from PDFs</h4>
 <ol start="3" type="1">
 <li>Extract text from PDF with the following script. This sets up and calls the Python package PyMuPDF.</li>
 </ol>
@@ -285,6 +290,9 @@ Note
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract text from PDFs</span></span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>text <span class="ot">&lt;-</span> <span class="fu">convert_pdf</span>(pdf_paths) <span class="sc">|&gt;</span> <span class="fu">unlist</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="translate-the-extracted-text" class="level4">
+<h4 class="anchored" data-anchor-id="translate-the-extracted-text">Translate the extracted text</h4>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -307,6 +315,7 @@ Note
 <li>Run the <code>translate-deepl.R</code> script in this project</li>
 </ul></li>
 </ol>
+</section>
 </section>
 <section id="text-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="text-analysis">Text analysis</h2>

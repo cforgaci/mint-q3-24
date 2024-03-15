@@ -86,13 +86,15 @@ We will use a selection of newsletter articles about farming communities in the 
 
 We will work with one of the most popular topic models called latent Dirichlet allocation (LDA), a probabilistic model in which every document is a distribution over a given number of topics and every topic is a distribution over the vocabulary, i.e., all distinct words used in all documents. The details of LDA are outside the scope of this workshop; if you want to know more, you can read more in [@blei2012].
 
-## Pre-processing
+## Prepare your data
 
 Before fitting a topic model, we need to make sure that our data is in the right form. Pre-processing in general is an essential yet challenging part of quantitative data analysis, especially when dealing with unstructured data such as text coming from different media. Hence, it is very (and too) often the reason why one might give up before even starting to analyse their data. Moreover, trying to analyse poorly pre-processed data will very likely lead to unreliable and disappointing results. Do not underestimate and follow carefully these steps.
 
 Text data can be obtained in many formats, but it is widely available in PDFs. Reports, journal articles, scans of physical publications, posters, are examples of types of text data that are openly available in PDF format. We will focus on this type of data and we will discuss other types of data coming from different media in other parts of the workshop.
 
-We start with a set of PDFs of newsletter articles in Dutch. We are facing two challenges: the text is not-machine-readable and we need it to be in English.
+We start with a set of PDFs of newsletter articles in Dutch. We are facing three challenges: the text is not-machine-readable, it is stored in PDFs and we need it them be in English.
+
+#### Make PDFs machine-readable
 
 Let's tackle the first issue. Scanned documents and some PDF documents with garbled text are not machine readable. Tools such as the Python application [OCRmyPDF](https://ocrmypdf.readthedocs.io/en/latest/) can help with this issue by rasterizing and then adding an optical character recognition (OCR) text layer to the document.
 
@@ -106,6 +108,8 @@ Note that points 1 and 2 below are specific to this dataset and that you can ski
 ``` sh
 find . -name '*.pdf' -exec ocrmypdf --force-ocr --language nld --clean '{}' '{}' \;
 ```
+
+#### Extract text from PDFs
 
 3.  Extract text from PDF with the following script. This sets up and calls the Python package PyMuPDF.
 
@@ -123,8 +127,12 @@ pdf_paths <- list.files(data_root, full.names = TRUE, pattern = "*.pdf$")
 text <- convert_pdf(pdf_paths) |> unlist()
 ```
 
+#### Translate the extracted text
+
+The second issue, translation, can be automated
+
 ::: callout-note
-Note that point 4 below is specific to this dataset and that you can skip it if your data is in English. For the default dataset, the translated texts are already included in the dato folder in TXT format.
+Note that point 4 below is specific to this dataset and that you can skip it if your data is in English. For the default dataset, the translated texts are already included in the `data` folder in `.txt` format.
 :::
 
 4.  If the text is in Dutch (or another language), translate it to English using the [DeepL API](https://www.deepl.com/pro-api?cta=header-pro-api) accessible in R via the \`deeplr\` package. Note that you need to create a developer account and the free plan is limited to 500,000 characters per month. This quota was sufficient for the translation of the 51 newsletter articles (`r sum(nchar(text))` characters in total) used in this analysis. Before running the script below:
