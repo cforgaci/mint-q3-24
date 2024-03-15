@@ -23,12 +23,12 @@ In this workshop, we will work in a computational notebook, an environment that 
 
 ![](fig/rstudio.png)
 
-4.  For our analysis, we will need to load a number of R packages that extend the out-of-the-box functionality of R. Run the code chunk below by pressing on the green arrow in its upper right corner. If this is the first time you run the script, it will take a couple of minutes until all packages are installed.
+4.  For our analysis, we will need to load a number of R packages that extend the out-of-the-box functionality of R. Run the code chunk below by pressing on the green arrow in its upper right corner. If this is the first time you run the script, it will take a couple of minutes until all packages are installed. 
 
 ```{r setup, message=FALSE}
 # Install packages
 if (!"renv" %in% installed.packages()) install.packages("renv")
-renv::restore()
+renv::restore(prompt = FALSE)
 
 # Load packages
 library(tidyverse)        # Data manipulation and visualisation
