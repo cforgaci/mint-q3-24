@@ -1,0 +1,5 @@
+section.has-dark-background a,
+section.has-dark-background a:hover {
+  color: white;
+  text-decoration: underline;
+}

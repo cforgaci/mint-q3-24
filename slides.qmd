@@ -1,0 +1,60 @@
+---
+title: "Mining Dutch<br>media about farming communities"
+subtitle: "A Topic Modeling Approach using R"
+date: "20 March 2024"
+author: "Claudiu Forgaci"
+format: 
+  revealjs:
+    slide-number: c/t
+    # logo: fig/rbanism-logo.png
+    css: style.css
+footer: "Topic Modeling with R"
+---
+
+## Workshop outline {.smaller}
+
+1. Tutorial: Finding topics in Dutch news
+2. Tutorial: How to get your own data from social media? (Shuyu Zhang)
+3. Exercise: Topic modeling with your own data
+
+# Part 1: Finding topics in Dutch news {.center background-color="#00A6D6"}
+
+# The question {.center background-color="#00A6D6"}
+What are the main farming-related topics discussed in Dutch news since 2022?
+
+# The data {.center background-image="fig/news.jpg"}
+51 newspaper articles<br>in Dutch
+
+# The approach {.center background-color="#00A6D6"}
+Quantitative analysis:<br>Topic modeling
+
+## Quantitative analysis
+::: {.incremental}
+<b>Pros</b>:  
+
+- Reproducible - re-run the analysis with the same results
+- Automated - run the analysis on other data
+- Scalable - run the analysis on (much) more data
+
+<b>Cons</b>:  
+
+- Requires knowledge of statistics
+- Results depend on the amount and quality of data available
+
+:::
+
+## The method
+Topic modeling using LDA as a way to reveal latent topics inunstructured text data.
+
+- documents are a mixture of topics
+- topics are a mixture of words
+
+# Go to [edu.nl/ph3a6](edu.nl/ph3a6) {background-color="#00A6D6"}
+
+And log in to RStudio Server with:  
+
+- the username from your handout
+- the password <b>Rban1smGuest</b>
+
+# 
+
