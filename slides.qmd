@@ -2,7 +2,9 @@
 title: "Farming communities<br>in Dutch media"
 subtitle: "A Topic Modeling Approach using R"
 date: "20 March 2024"
-author: "Claudiu Forgaci"
+author:
+  - "Claudiu Forgaci"
+  - "Shuyu Zhang"
 format: 
   revealjs:
     slide-number: c/t
@@ -13,11 +15,26 @@ footer: "Topic Modeling with R"
 
 ## Workshop outline {.smaller}
 
-1. Tutorial: How to get your own data from social media with Web Scraper? (Shuyu Zhang)
-2. Tutorial: Finding topics in Dutch news
-3. Exercise: Topic modeling with your own data
+1. Tutorial: Scraping data from social media (Shuyu) - 30 min
+2. Tutorial: Finding topics in Dutch news (Claudiu) - 1 hour
+3. Exercise: Topic modeling with your own data - 1 hour
 
-# Part 1: Finding topics in Dutch news {.center background-color="#00A6D6"}
+# Part 1: Scraping data from social media {.center background-color="#00A6D6"}
+
+# The question {.center background-color="#00A6D6"}
+What are the main farming-related topics discussed in social media?
+
+# The data {.center}
+Social media data<br>from Facebook or X
+
+## Why social media data?
+
+# The approach {.center background-color="#00A6D6"}
+Web scraping using the Chrome extension<br><b>[Web Data Research Assistant](https://southampton.ac.uk/~lac/WebDataResearchAssistant/)</b>
+
+## What is web scraping?
+
+# Part 2: Finding topics in Dutch news {.center background-color="#00A6D6"}
 
 # The question {.center background-color="#00A6D6"}
 What are the main farming-related topics discussed in Dutch news since 2022?
