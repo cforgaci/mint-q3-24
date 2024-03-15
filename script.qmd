@@ -17,9 +17,11 @@ In this workshop, we will work in a computational notebook, an environment that 
 
 1.  During the workshop, we work in [a cloud instance of RStudio](http://rstudio-server-edu.bk.tudelft.nl:8787/) accessible through your web browser, so no installation is required. After the workshop, you will need to install [R, RStudio Desktop](https://posit.co/download/rstudio-desktop/) and [Python](https://www.python.org/downloads/) for your operating system.
 
-2.  Open RStudio and create a new project from `File > New Project... > Version Control > Git` with the URL `https://github.com/cforgaci/mint2324Q3U.git` and project directory name `mint2324Q3U`. Browse to a location of your choice on your computer and click on `Create Project`. This will create a project directory populated with the data scripts used in the workshop.
+2.  In RStudio, create a new project from `File > New Project... > Version Control > Git` with the URL `https://github.com/cforgaci/mint2324Q3U.git` and project directory name `mint2324Q3U`. Browse to a location of your choice on your computer and click on `Create Project`. This will create a project directory populated with the data scripts used in the workshop.
 
-3.  Open `script.qmd`. This will bring you to the computational notebook from where this document was rendered. Continue reading there.
+3.  Open `script.qmd`. This will bring you to the computational notebook from where this document was rendered. Activate the visual editor and continue reading there.
+
+![](fig/rstudio.png)
 
 4.  For our analysis, we will need to load a number of R packages that extend the out-of-the-box functionality of R. Run the code chunk below by pressing on the green arrow in its upper right corner. If this is the first time you run the script, it will take a couple of minutes until all packages are installed.
 
