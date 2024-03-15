@@ -86,7 +86,7 @@ find . -name '*.pdf' -exec ocrmypdf --force-ocr --language nld --clean '{}' '{}'
 
 3.  Extract text from PDF with the following script.
 
-```{r extract-text-from-pdf, message=FALSE, eval=FALSE}
+```{r extract-text-from-pdf, message=FALSE}
 # Set up Python for PDF text extraction
 virtualenv_create(envname = "myenv", python = install_python())
 py_install("PyMuPDF == 1.21.0", envname = "myenv")
