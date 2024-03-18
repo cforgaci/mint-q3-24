@@ -95,7 +95,7 @@ data_choice <- "facebook_x"
 
 ## Text analysis
 
-Read the excel files of facebook or x in R, we use excel file of x as an example.
+Read the Excel files of facebook or x in R. We use an Excel file with X data as an example.
 
 ```{r readxl}
 # read the excel data from folder, using data from x for example
@@ -121,7 +121,7 @@ fsq_words <- fsq %>%
   filter(nchar(token) > 3)  # Remove words of max. 3 characters
 ```
 
-... and have a quick look at the most frequently used words. We can already guess what this set of boeron of netherlands on social media x are about: frequently used words such as "people", "food", and "policy" "right" indicate different areas of concern present in social media posts. Note that we have 1609 rows, each representing one distinct word. This is the vocabulary we will provide as input to the word cloud.
+... and have a quick look at the most frequently used words. We can already guess what this set of boeren of netherlands on social media x are about: frequently used words such as "people", "food", and "policy" "right" indicate different areas of concern present in social media posts. Note that we have 1609 rows, each representing one distinct word. This is the vocabulary we will provide as input to the word cloud.
 
 ```{r tokens-rank}
 # Count the token frequency
