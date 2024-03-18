@@ -57,10 +57,11 @@ In this workshop, we will work in a computational notebook, an environment that 
 # py_install("PyMuPDF == 1.21.0", envname = "myenv")
 ```
 
--   If you are running this script in RStudio Desktop, make sure you add a `#` sign in front of `renv::deactivate()` before running the next code chunk.
+-   In RStudio Server, run the code below in the console without the `#` sign.
 
 ```{r message=FALSE}
-renv::deactivate()
+# Run the 
+# renv::deactivate()
 ```
 
 -   Then run this code to load the packages.
@@ -74,6 +75,7 @@ library(LDAvis)           # Interactive visualisation of LDA models
 require(servr)            # LDAvis dependency
 library(wordcloud)        # Generate word clouds
 require(reshape2)         # wordcloud dependency
+source("R/analyse.R")     # Load custom functions
 ```
 
 ## Introduction
@@ -184,7 +186,7 @@ if (length(doc_names) == 0) {
   }
 }
 
-df <- tibble(doc = str_sub(list.files(data_root, pattern = "*.txt"), 1, -4L), text_EN) |> 
+df <- tibble(doc = str_sub(list.files(data_root, pattern = "*.pdf"), 1, -4L), text_EN) |> 
   mutate(text_EN = str_replace_all(text_EN, "^[0-9]*$", ""))
 ```
 
@@ -257,6 +259,13 @@ for (i in 1:k) {
 topic_names
 ```
 
+```{r}
+# Which are the top n most frequently used words in each topic?
+n <- 20
+vis_top_words_per_topic(data = lda, top_n = n)
+```
+
+
 ## Interpretation
 
 In important final step of topic modeling is the interpretation of the results. This is a step that requires you, the person conducting the analysis, to qualitatively describe the topics. This boils down to naming the topics and describing them. The pseudo-naming we used above is an automated way to give an idea of what each topic is about, but we might want to further abstract those to overarching topics. This can be straightforward for some topics and challenging for others. Large Language Models like ChatGPT are very suitable for such a task. We will use the free version (3.5) of ChatGPT with a prompt generated below using the parameters set in this document. Run the code below and copy/paste its output in a new chat in ChatGPT.
@@ -280,6 +289,21 @@ The output below is a variant of ChatGPT's answer to our prompt. This will be sl
 > 3.  Public Services: Service delivery, Dutch opinion, hours - Analyzing public service delivery based on Dutch opinion and the impact of working hours.
 > 4.  Biodiversity Conservation: Nature, biodiversity, land Aerius, species - Addressing the conservation of biodiversity in nature, land Aerius, and various species.
 > 5.  European Agriculture: Farmers, agriculture, European, agricultural time - Evaluating the role of farmers in European agriculture and the necessary time investment for sustainable practices.
+
+Now, let's put together 
+
+```{r warning=FALSE, message=FALSE}
+# Which are the top n most frequently used words in each topic?
+n <- 20
+# Construct this vector manually based on the answer you get from ChatGPT
+topic_names <- c("Environmental Impact",
+                 "Resource Management",
+                 "Public Services",
+                 "Biodiversity Conservation",
+                 "European Agriculture")
+library(ggwordcloud)
+vis_wordclouds_per_topic(data = lda, top_n = n, topic_names = topic_names)
+```
 
 The interpretation of the topic model can be further aided by LDAvis, a package that can generate interactive visualisation of the topics in a topic model. Running the following code chunk will open a browser window that allows you to explore topic-level top words as well as the relevance of individual words across topics.
 
