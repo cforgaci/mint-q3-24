@@ -59,7 +59,7 @@ In this workshop, we will work in a computational notebook, an environment that 
 
 -   If you are running this script in RStudio Desktop, make sure you add a `#` sign in front of `renv::deactivate()` before running the next code chunk.
 
-```{r setup, message=FALSE}
+```{r message=FALSE}
 renv::deactivate()
 ```
 
