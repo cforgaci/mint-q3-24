@@ -50,7 +50,6 @@ In this workshop, we will work in a computational notebook, an environment that 
 -   First, run the `install` code chunk below by pressing on the green arrow in its upper right corner. If you are running this script in RStudio Desktop, you will need to first delete the five `#` signs before running the `install` code chunk. It will take a few of minutes until all packages are installed. In RStudio Server, run the code as it is.
 
 ```{r install, eval=FALSE}
-renv::deactivate()
 # renv::activate()
 # if (!"renv" %in% installed.packages()) install.packages("renv")
 # renv::restore(prompt = FALSE)
@@ -58,9 +57,10 @@ renv::deactivate()
 # py_install("PyMuPDF == 1.21.0", envname = "myenv")
 ```
 
--   Then run this code to load the packages.
+-   Then run this code to load the packages. If you are running this script in RStudio Desktop, make sure you add a `#` sign in front of `renv::deactivate()` before running the code chunk.
 
 ```{r setup, message=FALSE}
+renv::deactivate()
 library(tidyverse)        # Data manipulation and visualisation
 library(reticulate)       # R interface with Python
 library(tidytext)         # Text manipulation
