@@ -30,48 +30,49 @@ include-in-header:
 ---
 
 ::: callout-note
-After analyzing the dutch news data, if you still have interests in working social media data and to hear more about citizen voice, you can follow the documents to do the very similar things. If you are reading the source document `script_socialmedia.qmd` and want to see a rendered version of it, click on the Render button above this window.
+After analysing the Dutch news data, if you still have interests in working social media data and to hear more about citizen voice, you can follow the documents to do the very similar things. If you are reading the source document `script_socialmedia.qmd` and want to see a rendered version of it, click on the Render button above this window.
 :::
 
 ## Setup
 
-### Software of collecting data
+### Software for data collection
 
-1.  During the workshop, we work with [Web Data Research Assistant](https://southampton.ac.uk/~lac/WebDataResearchAssistant/) for collecting Facebook and X data, it is a web browser extension and using Web sourced data, in particular Twitter, Facebook, Google (not work for google map), and Instagram.
+During the workshop, we work with [Web Data Research Assistant](https://southampton.ac.uk/~lac/WebDataResearchAssistant/) for scraping Facebook and X data. Web Data Research Assistant is a web browser extension allowing you to scrape data from the web, in particular from Twitter, Facebook, Google (does not work for Google Maps), and Instagram.
 
-2.  Install Web data research assistant in chrome: [Install](https://chromewebstore.google.com/detail/web-data-research-assista/kcdbekkmigohaijilebpaeoopcgjbbdm?pli=1)
+1.  Make sure you are using Google Chrome as your web browser. If you don't have it, download and install it from [here](https://www.google.com/chrome/).
 
-3.  Go to facebook or x and search for keywords you are interested, then Press Shift-Ctrl-A (the Shift key + Control key + the A key) to activate the data gathering process. ![](fig/webscraping1.png)
+2.  Install the Web Data Reseach Assistant extension from [here](https://chromewebstore.google.com/detail/web-data-research-assista/kcdbekkmigohaijilebpaeoopcgjbbdm?pli=1).
 
-4.  Press Shift-Ctrl-H (the Shift key + Control key + the H key) to halt the data gathering process and stop the browser scrolling. A webdatara.html will show in the bottom of the page. ![](fig/webscraping2.png) 5.Open the webdatara.html, copy all the data, open a new excel and paste all the data into the excel file. ![](fig/webscraping3.png)
+3.  In Chrome, go to Facebook or X and search for keywords you are interested in, then press <kbd>Shift</kbd>+<kbd>Ctrl</kbd>+<kbd>A</kbd> to activate the data gathering process. ![](fig/webscraping1.png)
 
-### Software of analysing data
+4.  Press <kbd>Shift</kbd>+<kbd>Ctrl</kbd>+<kbd>H</kbd> to halt the data gathering process and stop the browser scrolling. You will be prompted to save a `WebDataRE.html` file. ![](fig/webscraping2.png)
+
+5.Open the `WebDataRE.html`, select the data in the table (including the column headers), open a new Excel file and paste the copied data into it. ![](fig/webscraping3.png)
+
+### Software for analysing data
 
 1.  During the workshop, we work in [a cloud instance of RStudio](http://rstudio-server-edu.bk.tudelft.nl:8787/) accessible through your web browser, so no installation is required. After the workshop, you will need to install [R, RStudio Desktop](https://posit.co/download/rstudio-desktop/) and [Python](https://www.python.org/downloads/) for your operating system.
 
 2.  In RStudio, create a new project from `File > New Project... > Version Control > Git` with the URL `https://github.com/cforgaci/mint2324Q3U.git` and project directory name `mint2324Q3U`. Browse to a location of your choice on your computer and click on `Create Project`. This will create a project directory populated with the data scripts used in the workshop.
 
-3.  Open `script.qmd`. This will bring you to the computational notebook from where this document was rendered. Activate the visual editor and continue reading there. ![](fig/rstudio.png)
+3.  Open `script_socialmedia.qmd`. This will bring you to the computational notebook from where this document was rendered. Activate the visual editor and continue reading there. ![](fig/rstudio.png)
 
-4.  For our analysis, we will need to load a number of R packages that extend the out-of-the-box functionality of R. Run the code chunk below by pressing on the green arrow in its upper right corner. If this is the first time you run the script, it will take a couple of minutes until all packages are installed.
+4.  For our analysis, we will need to load a number of R packages that extend the out-of-the-box functionality of R. Run the `setup` code chunk below by pressing on the green arrow in its upper right corner.
+
+-   If you are running this script in RStudio Desktop, you will need to first run the `install` code below, by deleting the two `#` signs and running the code chunk. It will take a few of minutes until all packages are installed.
+
+```{r install, eval=FALSE}
+# if (!"renv" %in% installed.packages()) install.packages("renv")
+# renv::restore(prompt = FALSE)
+```
+
+-   Run this code to load the packages we will use in this document
 
 ```{r setup, message=FALSE}
-# Install packages
-if (!"renv" %in% installed.packages()) install.packages("renv")
-renv::restore(prompt = FALSE)
-
-# Load packages
 library(tidyverse)        # Data manipulation and visualisation
-library(reticulate)       # R interface with Python
 library(tidytext)         # Text manipulation
-library(topicmodels)      # Topic modeling
-library(LDAvis)           # Interactive visualisation of LDA models
-require(servr)            # LDAvis dependency
 library(wordcloud)        # Generate word clouds
 require(reshape2)         # wordcloud dependency
-library(openai)           # Access ChatGPT from R
-library(googleLanguageR)  # Text translation with Google Translation API
-library(deeplr)           # Text translation with DeepL API
 library(readxl)           # Read Excel files in R
 library(stopwords)        # Provides stopwords lists for multiple languages
 library(tm)               # Create and manipulate corpora
