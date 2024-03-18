@@ -65,7 +65,7 @@ renv::deactivate()
 
 -   Then run this code to load the packages.
 
-```{r setup, message=FALSE}
+```{r load-packages, message=FALSE}
 library(tidyverse)        # Data manipulation and visualisation
 library(reticulate)       # R interface with Python
 library(tidytext)         # Text manipulation
