@@ -106,7 +106,7 @@ At this step, we define a list of stop words that occur in high frequency across
 
 ```{r stopwords}
 stopwords_vec <- stopwords()
-custom_stopwords_vec <- c(stopwords_vec,"https", "twitter", "x", "also", "think", "must", "know", "many", "much", "like", "everything", "really", "want","without", "going", "good", "something", "farmers", "netherlands", "nthe" )
+custom_stopwords_vec <- c("https", "twitter", "x", "also", "think", "must", "know", "many", "much", "like", "everything", "really", "want","without", "going", "good", "something", "farmers", "netherlands", "nthe" )
 ```
 
 We choose the column of text information, split the entire corpus into words and filter them with some rules...
