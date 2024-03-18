@@ -1,8 +1,21 @@
 ---
-title: "What do the facebook or x say about farming communities?"
-subtitle: "A word cloud analysis using R"
-author: "Shuyu Zhang"
-co-author: "Claudiu Forgaci"
+title: "What do Facebook or X users say about farming communities?"
+subtitle: "Word cloud analysis using R"
+author: 
+  - name: "Shuyu Zhang"
+    correspondence: "yes"
+    email: "S.Zhang-19@tudelft.nl"
+    affiliations: 
+      - ref: tud
+  - name: "Claudiu Forgaci"
+    email: C.Forgaci@tudelft.nl
+    orcid: 0000-0003-3218-5102
+    affiliations: 
+      - ref: tud
+affiliations:
+  - id: tud
+    name: Delft University of Technology
+    address: Julianalaan 134, 2628 BL, Delft, Zuid-Holland, The Netherlands
 date: "20 March 2024"
 format: html
 toc: true
