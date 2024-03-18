@@ -47,9 +47,11 @@ In this workshop, we will work in a computational notebook, an environment that 
 
 4.  For our analysis, we will need to load a number of R packages that extend the out-of-the-box functionality of R, as follows: 
 
--   First, run the `install` code chunk below by pressing on the green arrow in its upper right corner. If you are running this script in RStudio Desktop, you will need to first delete the three `#` signs before running the `install` code chunk. It will take a few of minutes until all packages are installed. In RStudio Server, run the code as it is.
+-   First, run the `install` code chunk below by pressing on the green arrow in its upper right corner. If you are running this script in RStudio Desktop, you will need to first delete the five `#` signs before running the `install` code chunk. It will take a few of minutes until all packages are installed. In RStudio Server, run the code as it is.
 
 ```{r install, eval=FALSE}
+renv::deactivate()
+# renv::activate()
 # if (!"renv" %in% installed.packages()) install.packages("renv")
 # renv::restore(prompt = FALSE)
 # virtualenv_create(envname = "myenv", python = install_python())
@@ -59,7 +61,6 @@ In this workshop, we will work in a computational notebook, an environment that 
 -   Then run this code to load the packages.
 
 ```{r setup, message=FALSE}
-renv::deactivate()
 library(tidyverse)        # Data manipulation and visualisation
 library(reticulate)       # R interface with Python
 library(tidytext)         # Text manipulation
