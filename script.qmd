@@ -316,9 +316,3 @@ Now, if the methods and workflows are clear, you are ready to run the document o
 4.  In the files tab of RStudio, click on upload. Navigate to the target directory `~/mint2324Q3U/data/mydata`, click on `Choose File` to select the zipped archive you created and click on `OK`.
 
 5.  Run the code chunks in this document from top to bottom to see the results of your analysis.
-
-<!--# TODO to be added at the end of Part 1 on web scraping -->
-
-### Exercise 1. Visualising scraped data
-
-You've been scraping data throughout the workshop. Now it is time to visualise it. Follow the steps from the web scraping tutorial to visualise the Facebook or X data you scraped during the workshop in a word cloud. What do you see? How would you describe the discourse of/about farming communities on social media?
