@@ -53,8 +53,6 @@ In this workshop, we will work in a computational notebook, an environment that 
 # renv::activate()
 # if (!"renv" %in% installed.packages()) install.packages("renv")
 # renv::restore(prompt = FALSE)
-virtualenv_create(envname = "myenv", python = install_python())
-py_install("PyMuPDF == 1.21.0", envname = "myenv")
 ```
 
 -   In RStudio Server, run `renv::deactivate()` in the console.
@@ -137,7 +135,9 @@ find . -name '*.pdf' -exec ocrmypdf --force-ocr --language nld --clean '{}' '{}'
 3.  Extract text from PDF with the following script. This sets up and calls the Python package PyMuPDF.
 
 ```{r extract-text-from-pdf, message=FALSE}
-# Use Python for PDF text extraction
+# Set up and use Python for PDF text extraction
+reticulate::virtualenv_create(envname = "myenv", python = install_python())
+reticulate::py_install("PyMuPDF == 1.21.0", envname = "myenv")
 use_virtualenv("myenv")
 source_python("extract-text-from-pdf.py")
 
