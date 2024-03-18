@@ -142,3 +142,9 @@ fsq_words_top100 <- fsq_words %>%
 wordcloud(words = fsq_words_top100$token, freq = fsq_words_top100$n, 
           colors = rainbow(length(fsq_words_top100$token)), scale=c(3, 0.2))
 ```
+
+## Now it's your turn!
+
+### Exercise: Visualising scraped data
+
+You've been scraping data throughout the workshop. Now it is time to visualise it. Follow the steps from the web scraping tutorial to visualise the Facebook or X data you scraped during the workshop in a word cloud. What do you see? How would you describe the discourse of/about farming communities on social media?
