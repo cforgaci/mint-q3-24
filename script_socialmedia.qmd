@@ -151,6 +151,8 @@ You've been scraping data throughout the workshop. Now it is time to visualise i
 
 1.  In the `Files` tab of RStudio, click on `Upload`. Navigate to the target directory `~/mint2324Q3U/data/facebook_x`, click on `Choose File` to select the Excel file with your scraped data and click on `OK`.
 
-2. Follow the steps from the web scraping tutorial to visualise the social media data you scraped during the workshop in a word cloud. 
+2.  On line 102 of this script, replace `x#boeren_nederland_EN.xlsx` with the name of your uploaded file.
+
+3. Follow the steps of the web scraping tutorial above to visualise your social media data in a word cloud. 
 
 What do you see? How would you describe the discourse of/about farming communities on social media?
