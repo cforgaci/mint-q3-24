@@ -65,13 +65,13 @@ Quantitative analysis:<br>Topic modeling
 
 ## Quantitative analysis
 
-<b>Why?</b>:
+<b>Why?</b>
 
 -   Reproducible - re-run the analysis with the same results
 -   Automated - run the analysis on other data
 -   Scalable - run the analysis on (much) more data
 
-<b>Good to know:</b>:
+<b>Good to know:</b>
 
 -   Requires (some) knowledge of statistics
 -   Results depend on the amount and quality of data available
