@@ -104,7 +104,7 @@ In an LDA model:
 :::
 :::
 
-# Application in RStudio {background-color="#00A6D6"}
+# Application in RStudio {background-color="#0076C2"}
 
 Open **`script.qmd`**<br>
 and follow the instructions there
