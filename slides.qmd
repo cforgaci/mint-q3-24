@@ -13,6 +13,7 @@ format:
     # logo: fig/Logo_Rbanism_White.png
     css: [style.css, logo.css]
     # theme: [default, custom.scss]
+    chalkboard: true
 footer: "Web Scraping & Topic Modeling with R"
 ---
 
