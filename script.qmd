@@ -105,7 +105,7 @@ data_root <- paste0("data/", data_choice)
 
 We will use a selection of newsletter articles about farming communities in the Netherlands and we want to understand what are the main areas of concern in those news items. Topic modeling is an unsupervised machine learning method used to reveal hidden topics in text data, especially useful when large amounts of data are available, e.g., from social media or newsletter archives.
 
-We will work with one of the most popular topic models called latent Dirichlet allocation (LDA), a probabilistic model in which every document is a distribution over a given number of topics and every topic is a distribution over the vocabulary, i.e., all distinct words used in all documents. The details of LDA are outside the scope of this workshop; if you want to know more, you can read more in [@blei2012].
+We will work with one of the most popular topic models called latent Dirichlet allocation (LDA), a probabilistic model in which every document is a distribution over a given number of topics and every topic is a distribution over the vocabulary, i.e., all distinct words used in all documents. The details of LDA are outside the scope of this workshop; if you want to know more, you can read more in @blei2012.
 
 ## Prepare your data
 

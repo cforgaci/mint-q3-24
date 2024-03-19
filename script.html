@@ -175,7 +175,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In this workshop, we will work in a computational notebook, an environment that combines narrative, executable code and output in one place. The document you are reading is a Quarto document that combines <a href="https://www.markdowntutorial.com/">Markdown</a>, a markup language with a simple syntax for text formatting, with code chunks written in the R programming language. If you are reading the source document <code>script.qmd</code> and want to see a rendered version of it, click on the Render button above this window or visit <a href="https://cforgaci.github.io/mint2324Q3U/script.html" class="uri">https://cforgaci.github.io/mint2324Q3U/script.html</a>.</p>
+<p>In this workshop, we work in a computational notebook, an environment that combines narrative, executable code and output in one place. The document you are reading is a Quarto document that combines <a href="https://www.markdowntutorial.com/">Markdown</a>, a markup language with a simple syntax for text formatting, with code chunks written in the R programming language. If you are reading the source document <code>script.qmd</code> and want to see a rendered version of it, click on the Render button above this window or visit <a href="https://cforgaci.github.io/mint2324Q3U/script.html" class="uri">https://cforgaci.github.io/mint2324Q3U/script.html</a>.</p>
 </div>
 </div>
 <section id="setup" class="level2">
@@ -183,8 +183,8 @@ Note
 <section id="software" class="level3">
 <h3 class="anchored" data-anchor-id="software">Software</h3>
 <ol type="1">
-<li><p>During the workshop, we work in RStudio Server, a version of RStudio that is accessible through your web browser, so no installation is required. Visit <a href="http://rstudio-server-edu.bk.tudelft.nl:8787/">RStudio Server</a> and log in with the credentials provided during the workshop. To follow the steps described in this document after the workshop, you will need to install <a href="https://posit.co/download/rstudio-desktop/">R, RStudio Desktop</a> and <a href="https://www.python.org/downloads/">Python</a> for your operating system.</p></li>
-<li><p>After opening RStudio, create a new project from <code>File &gt; New Project... &gt; Version Control &gt; Git</code> with the URL <code>https://github.com/cforgaci/mint2324Q3U.git</code> and project directory name <code>mint2324Q3U</code>. Browse to a location of your choice on your computer and click on <code>Create Project</code>. This will create a project directory populated with the data and scripts used in the workshop.</p></li>
+<li><p>During the workshop, we work in RStudio Server, a version of RStudio that is accessible through your web browser, so no installation is required. Visit <a href="http://rstudio-server-edu.bk.tudelft.nl:8787/">RStudio Server</a> and log in with the credentials provided in your handout. To follow the steps described in this document after the workshop, you will need to install <a href="https://posit.co/download/rstudio-desktop/">R, RStudio Desktop</a> and <a href="https://www.python.org/downloads/">Python</a> for your operating system.</p></li>
+<li><p>If you haven’t created an RStudio project with the workshop material yet, create it from <code>File &gt; New Project... &gt; Version Control &gt; Git</code> with the URL <code>https://github.com/cforgaci/mint2324Q3U.git</code> and project directory name <code>mint2324Q3U</code>. Browse to a location of your choice on your computer and click on <code>Create Project</code>. This will create a project directory populated with the data and scripts used in the workshop.</p></li>
 <li><p>Open the file <code>script.qmd</code> from the Files tab in Rstudio. This will open the computational notebook from where this document was rendered. Activate the visual editor as shown below and continue reading there.</p></li>
 </ol>
 <p><img src="fig/rstudio.png" class="img-fluid"></p>
@@ -244,7 +244,7 @@ Note
 <section id="topic-modeling-what-is-it-and-why-do-we-use-it" class="level3">
 <h3 class="anchored" data-anchor-id="topic-modeling-what-is-it-and-why-do-we-use-it">Topic modeling: what is it and why do we use it?</h3>
 <p>We will use a selection of newsletter articles about farming communities in the Netherlands and we want to understand what are the main areas of concern in those news items. Topic modeling is an unsupervised machine learning method used to reveal hidden topics in text data, especially useful when large amounts of data are available, e.g., from social media or newsletter archives.</p>
-<p>We will work with one of the most popular topic models called latent Dirichlet allocation (LDA), a probabilistic model in which every document is a distribution over a given number of topics and every topic is a distribution over the vocabulary, i.e., all distinct words used in all documents. The details of LDA are outside the scope of this workshop; if you want to know more, you can read more in <span class="citation" data-cites="blei2012">(<a href="#ref-blei2012" role="doc-biblioref">Blei 2012</a>)</span>.</p>
+<p>We will work with one of the most popular topic models called latent Dirichlet allocation (LDA), a probabilistic model in which every document is a distribution over a given number of topics and every topic is a distribution over the vocabulary, i.e., all distinct words used in all documents. The details of LDA are outside the scope of this workshop; if you want to know more, you can read more in <span class="citation" data-cites="blei2012">Blei (<a href="#ref-blei2012" role="doc-biblioref">2012</a>)</span>.</p>
 </section>
 </section>
 <section id="prepare-your-data" class="level2">
