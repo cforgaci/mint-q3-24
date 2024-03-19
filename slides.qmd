@@ -23,12 +23,16 @@ footer: "Web Scraping & Topic Modeling with R"
 2. Tutorial: Finding topics in Dutch news (Claudiu) - 1 hour
 3. Exercises: Visualising scraped data & topic modeling with your own data - 1 hour
 
-# Go to [edu.nl/ph3a6](https://edu.nl/ph3a6){target="_blank"} {background-color="#00A6D6"}
+# Setup {background-color="#00A6D6"}
 
-And log in to RStudio Server with:
+1. Log in to RStudio Server at **[edu.nl/ph3a6](https://edu.nl/ph3a6){target="_blank"}** with
 
 -   the username from your handout
 -   the password <b>Rban1smGuest</b>
+
+2. Open **[edu.nl/qh34g](https://edu.nl/qh34g){target="_blank"}** in a new tab
+
+3. When you are ready put a green sticky note on your laptop and follow the instructions on the presenter's screen
 
 # Part 1: Scraping data from social media {.center background-color="#009B77"}
 
