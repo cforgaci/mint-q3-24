@@ -286,7 +286,7 @@ The output below is a variant of ChatGPT's answer to our prompt. This will be sl
 > 4.  Biodiversity Conservation: Nature, biodiversity, land Aerius, species - Addressing the conservation of biodiversity in nature, land Aerius, and various species.
 > 5.  European Agriculture: Farmers, agriculture, European, agricultural time - Evaluating the role of farmers in European agriculture and the necessary time investment for sustainable practices.
 
-Now, let's put together 
+Now, let's put show one word cloud for each topic and name them according to the response from ChatGPT.
 
 ```{r warning=FALSE, message=FALSE}
 # Which are the top n most frequently used words in each topic?
@@ -325,19 +325,21 @@ LDAvis::serVis(json)
 ## Now it's your turn!  
 Now you are ready to run the document on your own data. You do that as follows:
 
-1.  Update the value of `data_choice` from `"nrc"` to `"mydata"`
+1.  In the Files tab, open the file `script_mydata.qmd`. This is identical to `script.qmd`, except that the value of `data_choice` was changed from `"nrc"` to `"mydata"` and the NRC-specific stop words were removed from `stop_words_custom`. Make sure you are in that copied file.
 
-2.  Make sure you have a set of PDFs written in English ready to be used for topic modeling.
+2.  In the `Environment` tab, click on the broom icon to make sure you have a clean workspace (no conflicting data from the previous exercise).
 
-3.  Create a zip archive of those PDF files.
+3.  Make sure you have a set of PDFs written in English ready to be used for topic modeling.
 
-4.  In the `Files` tab of RStudio, click on `Upload`. Navigate to the target directory `~/mint2324Q3U/data/mydata`, click on `Choose File` to select the zipped archive you created and click on `OK`.
+4.  Create a zip archive of those PDF files.
 
-5.  Run the code chunks from top to bottom (the order matters). Look at the overall word cloud and spot words that do not add meaning. Add those to the custom stop words and rerun the code chunks. Iterate until the overall wordcloud only shows meaningful words.
+5.  In the `Files` tab of RStudio, click on `Upload`. Navigate to the target directory `~/mint2324Q3U/data/mydata`, click on `Choose File` to select the zipped archive you created and click on `OK`.
 
-6.  Tweak the topic model parameters by changing the value of `k` (number of topics) on line 222 and `n_words` (number of words to be included in pseudo-naming the topics) on line 233.
+6.  Run the code chunks from top to bottom (the order matters). Look at the overall word cloud and spot words that do not add meaning. Add those to the custom stop words and rerun the code chunks. Iterate until the overall wordcloud only shows meaningful words.
 
-7.  Paste the newly generated prompt into ChatGPT. Does the answer make sense? If needed continue the conversation with ChatGPT to refine its answers. Rename the topic names on lines 294-298 with the answers you got from ChatGPT.
+7.  Tweak the topic model parameters by changing the value of `k` (number of topics) on line 222 and `n_words` (number of words to be included in pseudo-naming the topics) on line 233.
+
+8.  Paste the newly generated prompt into ChatGPT. Does the answer make sense? If needed continue the conversation with ChatGPT to refine its answers. Rename the topic names on lines 294-298 with the answers you got from ChatGPT.
 
 Note that every time you make a change, you need to run the code chunks in this document from top to bottom to see the updated results. When you are satisfied with the results, render the document to see the final html output.
 

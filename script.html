@@ -480,7 +480,7 @@ How would you name these topics? Use maximum two words to name the topics and pr
 <li>European Agriculture: Farmers, agriculture, European, agricultural time - Evaluating the role of farmers in European agriculture and the necessary time investment for sustainable practices.</li>
 </ol>
 </blockquote>
-<p>Now, let’s put together</p>
+<p>Now, let’s put show one word cloud for each topic and name them according to the response from ChatGPT.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Which are the top n most frequently used words in each topic?</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">20</span></span>
@@ -524,7 +524,8 @@ How would you name these topics? Use maximum two words to name the topics and pr
 <h2 class="anchored" data-anchor-id="now-its-your-turn">Now it’s your turn!</h2>
 <p>Now you are ready to run the document on your own data. You do that as follows:</p>
 <ol type="1">
-<li><p>Update the value of <code>data_choice</code> from <code>"nrc"</code> to <code>"mydata"</code></p></li>
+<li><p>In the Files tab, the file <code>script_mydata.qmd</code>. This identical to <code>script.qmd</code>, except that the value of <code>data_choice</code> was changed from <code>"nrc"</code> to <code>"mydata"</code> and the NRC-specific stop words were removed from <code>stop_words_custom</code>. Make sure you are in that copied file.</p></li>
+<li><p>In the <code>Environment</code> tab, click on the broom icon to make sure you have a clean workspace (no conflicting data from the previous exercise).</p></li>
 <li><p>Make sure you have a set of PDFs written in English ready to be used for topic modeling.</p></li>
 <li><p>Create a zip archive of those PDF files.</p></li>
 <li><p>In the <code>Files</code> tab of RStudio, click on <code>Upload</code>. Navigate to the target directory <code>~/mint2324Q3U/data/mydata</code>, click on <code>Choose File</code> to select the zipped archive you created and click on <code>OK</code>.</p></li>
