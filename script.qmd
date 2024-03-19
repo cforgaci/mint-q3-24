@@ -27,6 +27,7 @@ bibliography: references.bib
 citation:
   type: report
   publisher: TU Delft
+csl: apa.csl
 ---
 
 ::: callout-note

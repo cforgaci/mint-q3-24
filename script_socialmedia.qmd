@@ -1,5 +1,5 @@
 ---
-title: "What do Facebook or X users say about farming communities?"
+title: "What do Facebook or X users say about farming in the Netherlands?"
 subtitle: "Word cloud analysis using R"
 author: 
   - name: "Shuyu Zhang"
@@ -27,6 +27,10 @@ include-in-header:
         white-space: pre-wrap !important;
       }
       </style>
+citation:
+  type: report
+  publisher: TU Delft
+csl: apa.csl
 ---
 
 ::: callout-note
