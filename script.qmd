@@ -334,9 +334,9 @@ Now you are ready to run the document on your own data. You do that as follows:
 
 5.  Run the code chunks from top to bottom (the order matters). Look at the overall word cloud and spot words that do not add meaning. Add those to the custom stop words and rerun the code chunks. Iterate until the overall wordcloud only shows meaningful words.
 
-5.  Tweak the topic model parameters by changing the value of `k` (number of topics) on line 222 and `n_words` (number of words to be included in pseudo-naming the topics) on line 233.
+6.  Tweak the topic model parameters by changing the value of `k` (number of topics) on line 222 and `n_words` (number of words to be included in pseudo-naming the topics) on line 233.
 
-6.  Paste the newly generated prompt into ChatGPT. Does the answer make sense? If needed continue the conversation with ChatGPT to refine its answers. Rename the topic names on lines 294-298 with the answers you got from ChatGPT.
+7.  Paste the newly generated prompt into ChatGPT. Does the answer make sense? If needed continue the conversation with ChatGPT to refine its answers. Rename the topic names on lines 294-298 with the answers you got from ChatGPT.
 
 Note that every time you make a change, you need to run the code chunks in this document from top to bottom to see the updated results. When you are satisfied with the results, render the document to see the final html output.
 
