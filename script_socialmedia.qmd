@@ -5,6 +5,7 @@ author:
   - name: "Shuyu Zhang"
     correspondence: "yes"
     email: "S.Zhang-19@tudelft.nl"
+    orcid: 0000-0002-0459-4200
     affiliations: 
       - ref: tud
   - name: "Claudiu Forgaci"
@@ -47,9 +48,9 @@ During the workshop, we work with [Web Data Research Assistant](https://southamp
 
 2.  Install the Web Data Reseach Assistant extension from [here](https://chromewebstore.google.com/detail/web-data-research-assista/kcdbekkmigohaijilebpaeoopcgjbbdm?pli=1).
 
-3.  In Chrome, go to Facebook or X and search for keywords you are interested in, then press <kbd>Shift</kbd>+<kbd>Ctrl</kbd>+<kbd>A</kbd> to activate the data gathering process. ![](fig/webscraping1.png)
+3.  In Chrome, go to Facebook or X and search for keywords you are interested in, then press `Shift` + `Ctrl` + `A` to activate the data gathering process. ![](fig/webscraping1.png)
 
-4.  Press <kbd>Shift</kbd>+<kbd>Ctrl</kbd>+<kbd>H</kbd> to halt the data gathering process and stop the browser scrolling. You will be prompted to save a `WebDataRE.html` file. ![](fig/webscraping2.png)
+4.  Press `Shift` + `Ctrl` + `H` to halt the data gathering process and stop the browser scrolling. You will be prompted to save a `WebDataRE.html` file. ![](fig/webscraping2.png)
 
 5.  Open the `WebDataRE.html`, select the data in the table (including the column headers), open a new Excel file and paste the copied data into it. ![](fig/webscraping3.png)
 
@@ -159,4 +160,5 @@ You've been scraping data throughout the workshop. Now it is time to visualise i
 
 3. Follow the steps of the web scraping tutorial above to visualise your social media data in a word cloud. 
 
+Discussion:
 What do you see? How would you describe the discourse of/about farming communities on social media?
