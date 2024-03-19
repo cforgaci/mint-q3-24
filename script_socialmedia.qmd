@@ -30,7 +30,7 @@ include-in-header:
 ---
 
 ::: callout-note
-In this workshop, we will work in a computational notebook, an environment that combines narrative, executable code and output in one place. The document you are reading is a Quarto document that combines [Markdown](https://www.markdowntutorial.com/), a markup language with a simple syntax for text formatting, with code chunks written in the R programming language. If you are reading the source document `script_socialmedia.qmd` and want to see a rendered version in your browser, click on the Render button above this window.
+In this workshop, we work in a computational notebook, an environment that combines narrative, executable code and output in one place. The document you are reading is a Quarto document that combines [Markdown](https://www.markdowntutorial.com/), a markup language with a simple syntax for text formatting, with code chunks written in the R programming language. If you are reading the source document `script_socialmedia.qmd` and want to see a rendered version in your browser, click on the Render button above this window.
 :::
 
 ## Setup
