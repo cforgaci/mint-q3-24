@@ -1,0 +1,28 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  Farming Communities in Dutch Media: Web Scraping and Topic
+  Modeling using R"
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Claudiu
+    family-names: Forgaci
+    email: C.Forgaci@tudelft.nl
+    orcid: 'https://orcid.org/0000-0003-3218-5102'
+    affiliation: Delft University of Technology
+  - given-names: Shuyu
+    family-names: Zhang
+    email: S.Zhang-19@tudelft.nl
+    affiliation: Delft University of Technology
+repository-code: 'https://github.com/cforgaci/mint2324Q3U/tree/main'
+keywords:
+  - topic modeling
+  - wordcloud
+  - web scraping
+  - R
+license: MIT
