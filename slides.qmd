@@ -10,6 +10,7 @@ format:
     slide-number: c/t
     # logo: fig/rbanism-logo.png
     css: style.css
+    # theme: [default, custom.scss]
 footer: "Web Scraping & Topic Modeling with R"
 ---
 
@@ -93,4 +94,21 @@ And log in to RStudio Server with:
 -   the username from your handout
 -   the password <b>Rban1smGuest</b>
 
-# 
+## Found this workshop useful? {.smaller}
+
+**Reach out to us with questions**:
+
+- Claudiu Forgaci: C.Forgaci@tudelft.nl
+-	Shuyu Zhang: S-Zhang-19@tudelft.nl
+
+**Follow Rbanism**:
+
+-	Sign up for our newsletter: [edu.nl/wxx98](https://edu.nl/wxx98)
+-	Follow us on [instagram.com/rbanism_](https://instagram.com/rbanism_)
+-	See our website: [rbanism.org](https://rbanism.org)
+
+**Citation**:
+
+- Zhang, S., & Forgaci, C. (2024). *What do Facebook or X users say about farming in the Netherlands? - Word cloud analysis using R* TU Delft.
+
+- Forgaci, C. (2024). *What do the Dutch news say about farming communities? - A Topic modeling approach using R* TU Delft.
