@@ -14,6 +14,13 @@ format:
 footer: "Web Scraping & Topic Modeling with R"
 ---
 
+# Go to [edu.nl/ph3a6](https://edu.nl/ph3a6) {background-color="#00A6D6"}
+
+And log in to RStudio Server with:
+
+-   the username from your handout
+-   the password <b>Rban1smGuest</b>
+
 ## Workshop outline {.smaller}
 
 1. Tutorial: Scraping data from social media (Shuyu) - 30 min
@@ -42,7 +49,7 @@ Web scraping using the Chrome extension<br><b>[Web Data Research Assistant](http
 
 Web scraping is the process of extracting data from websites. It involves automated techniques to collect information from web pages or social media website, typically in formats such as HTML, XML, or JSON. Web scraping allows you to retrieve specific data elements, such as text, images, or tables, from web pages and store them for analysis or other purposes.
 
-# Part 2: Finding topics in Dutch news {.center background-color="#00A6D6"}
+# Part 2: Finding topics in the Dutch news {.center background-color="#00A6D6"}
 
 # The question {.center background-color="#00A6D6"}
 
@@ -84,15 +91,6 @@ In an LDA model:
 - topics are a mixture of words
 :::
 :::
-
-
-
-# Go to [edu.nl/ph3a6](https://edu.nl/ph3a6) {background-color="#00A6D6"}
-
-And log in to RStudio Server with:
-
--   the username from your handout
--   the password <b>Rban1smGuest</b>
 
 ## Found this workshop useful? {.smaller}
 
