@@ -1,5 +1,7 @@
 ---
 title: "Farming communities<br>in Dutch media"
+title-slide-attributes:
+  data-background-color: "#00A6D6"
 subtitle: "Web Scraping & Topic Modeling using R"
 date: "20 March 2024"
 author:
@@ -8,11 +10,17 @@ author:
 format: 
   revealjs:
     slide-number: c/t
-    # logo: fig/rbanism-logo.png
-    css: style.css
+    # logo: fig/Logo_Rbanism_White.png
+    css: [style.css, logo.css]
     # theme: [default, custom.scss]
 footer: "Web Scraping & Topic Modeling with R"
 ---
+
+# Workshop outline {.smaller background-color="#00A6D6"}
+
+1. Tutorial: Scraping data from social media (Shuyu) - 30 min
+2. Tutorial: Finding topics in Dutch news (Claudiu) - 1 hour
+3. Exercises: Visualising scraped data & topic modeling with your own data - 1 hour
 
 # Go to [edu.nl/ph3a6](https://edu.nl/ph3a6) {background-color="#00A6D6"}
 
@@ -21,15 +29,9 @@ And log in to RStudio Server with:
 -   the username from your handout
 -   the password <b>Rban1smGuest</b>
 
-## Workshop outline {.smaller}
+# Part 1: Scraping data from social media {.center background-color="#009B77"}
 
-1. Tutorial: Scraping data from social media (Shuyu) - 30 min
-2. Tutorial: Finding topics in Dutch news (Claudiu) - 1 hour
-3. Exercises: Visualising scraped data & topic modeling with your own data - 1 hour
-
-# Part 1: Scraping data from social media {.center background-color="#00A6D6"}
-
-# The question {.center background-color="#00A6D6"}
+# The question {.center background-color="#009B77"}
 
 What are the main farming-related topics discussed in social media?
 
@@ -41,7 +43,7 @@ Social media data<br>from Facebook or X
 
 In the digital media era, social media platforms and websites serve as valuable sources for collecting user-generated content, which in turn represents the voices and opinions of citizens. Twitter (X)'s real-time nature and vast array of tweets cover diverse topics, providing insights into current events, public reactions, and emerging trends. Similarly, Facebook's extensive user base and features like status updates and comments offer rich data on user experiences and interactions. 
 
-# The approach {.center background-color="#00A6D6"}
+# The approach {.center background-color="#009B77"}
 
 Web scraping using the Chrome extension<br><b>[Web Data Research Assistant](https://southampton.ac.uk/~lac/WebDataResearchAssistant/)</b>
 
@@ -49,9 +51,14 @@ Web scraping using the Chrome extension<br><b>[Web Data Research Assistant](http
 
 Web scraping is the process of extracting data from websites. It involves automated techniques to collect information from web pages or social media website, typically in formats such as HTML, XML, or JSON. Web scraping allows you to retrieve specific data elements, such as text, images, or tables, from web pages and store them for analysis or other purposes.
 
-# Part 2: Finding topics in the Dutch news {.center background-color="#00A6D6"}
+# Application in RStudio {background-color="#009B77"}
 
-# The question {.center background-color="#00A6D6"}
+Open **`script_socialmedia.qmd`**<br>
+and follow the instructions there
+
+# Part 2: Finding topics in the Dutch news {.center background-color="#0076C2"}
+
+# The question {.center background-color="#0076C2"}
 
 What are the main farming-related topics discussed in Dutch news since 2022?
 
@@ -59,7 +66,7 @@ What are the main farming-related topics discussed in Dutch news since 2022?
 
 51 newspaper articles<br>in Dutch
 
-# The approach {.center background-color="#00A6D6"}
+# The approach {.center background-color="#0076C2"}
 
 Quantitative analysis:<br>Topic modeling
 
@@ -91,6 +98,11 @@ In an LDA model:
 - topics are a mixture of words
 :::
 :::
+
+# Application in RStudio {background-color="#00A6D6"}
+
+Open **`script.qmd`**<br>
+and follow the instructions there
 
 ## Found this workshop useful? {.smaller}
 
