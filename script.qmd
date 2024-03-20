@@ -38,7 +38,7 @@ In this workshop, we work in a computational notebook, an environment that combi
 
 ### Software
 
-1.  During the workshop, we work in RStudio Server, a version of RStudio that is accessible through your web browser, so no installation is required. Visit [RStudio Server](http://rstudio-server-edu.bk.tudelft.nl:8787/) and log in with the credentials provided in your handout. To follow the steps described in this document after the workshop, you will need to install [R, RStudio Desktop](https://posit.co/download/rstudio-desktop/) and [Python](https://www.python.org/downloads/) for your operating system.
+1.  During the workshop, we work in RStudio Server, a version of RStudio that is accessible through your web browser, so no installation is required. Visit [RStudio Server](http://rstudio-server-edu.bk.tudelft.nl:8787/) and log in with the credentials provided in your handout. To follow the steps described in this document after the workshop, you will need to install [R, RStudio Desktop](https://posit.co/download/rstudio-desktop/),  [Python](https://www.python.org/downloads/) and [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for your operating system.
 
 2.  If you haven't created an RStudio project with the workshop material yet, create it from `File > New Project... > Version Control > Git` with the URL `https://github.com/cforgaci/mint2324Q3U.git` and project directory name `mint2324Q3U`. Browse to a location of your choice on your computer and click on `Create Project`. This will create a project directory populated with the data and scripts used in the workshop.
 
