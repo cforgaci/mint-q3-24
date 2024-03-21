@@ -56,8 +56,6 @@ In this workshop, we work in a computational notebook, an environment that combi
 # renv::restore(prompt = FALSE)
 ```
 
--   In RStudio Server, run `renv::deactivate()` in the console.
-
 -   Then run this code to load the packages.
 
 ```{r load-packages, message=FALSE}
